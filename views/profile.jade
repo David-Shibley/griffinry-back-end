@@ -7,3 +7,5 @@ block content
     a(class='button', href='/user/#{user_data.id}/delete') Delete
     p Welcome to #{user_data.User_Name}s Griffinry!
     p Age: #{moment(user_data.DOB).fromNow(true)} old
+    each pet in pets
+      p #{pet.Type}
