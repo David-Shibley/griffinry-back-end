@@ -1,11 +1,15 @@
 extends layout
 
 block content
-  main
+  main(class='col')
     h1 #{user_data.User_Name}
-    a(class='button', href='/user/#{user_data.id}/edit') Edit
-    a(class='button', href='/user/#{user_data.id}/delete') Delete
-    p Welcome to #{user_data.User_Name}s Griffinry!
-    p Age: #{moment(user_data.DOB).fromNow(true)} old
-    each pet in pets
-      p #{pet.Type}
+    a(class='button row', href='/user/#{user_data.id}/edit') Edit
+    a(class='button row', href='/user/#{user_data.id}/delete') Delete
+    p(class='row') Age: #{moment(user_data.DOB).fromNow(true)} old
+    p(class='row') #{user_data.about_me}
+    h2(class='row') My Pets
+    ul(class='row')
+    each pet in adoptions
+      li(class='col-3') #{pet.Name}
+      #{pet.Color} #{pet.Type}
+      img(src='/images/test1.gif')

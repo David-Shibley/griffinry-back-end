@@ -6,17 +6,17 @@ function Users() {
   return knex('users');
 }
 
-function Pets() {
-  return knex('pets');
+function Adoptions() {
+  return knex('adoptions');
 }
 
 router.get('/:id', function(req, res) {
   Users().select().where('id', req.params.id).first()
   .then(function(profile) {
-    Pets().select().then(function(pets) {
+    Adoptions().select().then(function(adoptions) {
       res.render('profile', {
         user_data: profile,
-        pets: pets
+        adoptions: adoptions
       });
     });
   });
