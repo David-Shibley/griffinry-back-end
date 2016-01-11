@@ -1,7 +1,9 @@
 extends layout
 
 block content
-  .page-header
-    h1= username
+  main
+    h1 #{user_data.User_Name}
+    a(class='button', href='/user/#{user_data.id}/edit') Edit
+    a(class='button', href='/user/#{user_data.id}/delete') Delete
     p Welcome to #{user_data.User_Name}s Griffinry!
-    p #{user_data.DOB}
+    p Age: #{moment(user_data.DOB).fromNow(true)} old
