@@ -2,14 +2,14 @@ extends layout
 
 block content
   main(class='col')
-    h1 #{user_data.User_Name}
-    a(class='button row', href='/user/#{user_data.id}/edit') Edit
-    a(class='button row', href='/user/#{user_data.id}/delete') Delete
-    p(class='row') Age: #{moment(user_data.DOB).fromNow(true)} old
-    p(class='row') #{user_data.about_me}
+    div.user-data.row
+      h1 #{user_data[0].User_Name}
+      a(class='button', href='/user/#{user_data[0].id}/edit') Edit
+      a(class='button', href='/user/#{user_data[0].id}/delete') Delete
+    p(class='row') Age: #{moment(user_data[0].DOB).fromNow(true)} old
     h2(class='row') My Pets
     ul(class='row')
-    each pet in adoptions
-      li(class='col-3') #{pet.Name}
+    each pet in user_data
+      li.col-3 #{pet.Name}
       #{pet.Color} #{pet.Type}
       img(src='/images/test1.gif')

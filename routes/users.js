@@ -11,14 +11,21 @@ function Adoptions() {
 }
 
 router.get('/:id', function(req, res) {
-  Users().select().where('id', req.params.id).first()
-  .then(function(profile) {
-    Adoptions().select().then(function(adoptions) {
+  Users().where('users.id', req.params.id)
+  .innerJoin('adoptions', 'adoptions.User_Id', 'users.id')
+  .select('users.User_Name', 'users.DOB', 'users.id', 'adoptions.Name', 'adoptions.Color', 'adoptions.id as adoptions_id')
+  // .unionAll(function() {
+  //   Adoptions().innerJoin('pets', 'pets.id','adoptions.Pet_Id')
+  //   .select('pets.id as pets_id')
+  // })
+  .then(function(adoptions) {
+    console.log(adoptions);
+    // Adoptions().where('User_Id', profile.).then(function(adoptions) {
       res.render('profile', {
-        user_data: profile,
-        adoptions: adoptions
+        user_data: adoptions,
+        // adoptions: adoptions
       });
-    });
+    // });
   });
 });
 
