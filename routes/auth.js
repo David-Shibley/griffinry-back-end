@@ -1,4 +1,5 @@
 var express = require('express');
+var knex = require('../db/knex');
 var router = express.Router();
 var passport = require('passport');
 var knex = require('../db/knex');
@@ -17,6 +18,16 @@ router.get('/google/callback',
 router.post('/login', passport.authenticate('local', {failureRedirect: '/login'}),
   function(req, res){
     res.redirect('/dashboard');
+});
+
+router.get('/', function(req, res) {
+  Players().select().then(function(players){
+    res.render('players', {
+      title: 'Broncos Players',
+      players: players,
+      user: req.user
+    });
+  });
 });
 
 module.exports = router;

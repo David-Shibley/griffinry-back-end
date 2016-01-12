@@ -15,6 +15,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth');
 var signup = require('./routes/signup');
+var resources = require('./routes/resources');
 
 require('dotenv').load();
 
@@ -80,10 +81,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.locals.moment = require('moment');
+
 app.use('/auth', auth);
 app.use('/signup', signup);
 app.use('/', routes);
 app.use('/users', users);
+app.use('/resources', resources);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
