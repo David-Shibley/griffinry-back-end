@@ -52,6 +52,16 @@ body, html {
   .signup-form input {
     margin: 0.2rem 0; }
 
+.pet-creator {
+  display: flex;
+  flex-direction: row;
+  align-items: center; }
+
+.pet-form {
+  margin-left: 3em;
+  display: flex;
+  flex-direction: column; }
+
 .visible {
   margin-top: 1rem;
   display: block;

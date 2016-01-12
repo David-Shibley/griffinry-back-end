@@ -6,12 +6,18 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
+var knex = require('./db/knex');
+var bcrypt = require('bcrypt');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth');
-var resources = require('./routes/resources')
+var signup = require('./routes/signup');
+var resources = require('./routes/resources');
+var adoptions = require('./routes/adoptions');
+var pets = require('./routes/pets');
 
 require('dotenv').load();
 
@@ -32,12 +38,31 @@ passport.use(new GoogleStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function(){
+      console.log(profile.emails[0].value);
       console.log(profile);
-      console.log(profile.getEmail)
       return done(null, profile);
     });
   }
 ));
+
+passport.use(new LocalStrategy(
+  function(username, password, done){
+    knex('users').select().where('User_Name', username).first().then(function(user){
+        if(user){
+          bcrypt.compare(password, user.Password, function(err, res){
+            if(err){
+              return done(err);
+            }else if(res){
+              return done(null, user);
+            }else{
+              return done('Invalid username or password');
+            }
+          });
+        }else{
+          return done('not registered');
+        }
+    });
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -61,9 +86,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.locals.moment = require('moment');
 
 app.use('/auth', auth);
+app.use('/signup', signup);
 app.use('/', routes);
 app.use('/users', users);
 app.use('/resources', resources);
+app.use('/adoptions', adoptions);
+app.use('/pets', pets)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

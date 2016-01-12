@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Griffinry</title>
+		<link rel="stylesheet" href="css/main.css">
+		<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+		<script src="javascripts/createpet.js"></script>
+	</head>
+	<body>
+		<header>
+			<h1>Griffinry</h1>
+			<span><img src="images/griffinry_logo.png" alt="Griffinry"></span>
+			<div class="user">
+				<form action="/login">
+					<label for="username">Username:</label>
+					<input type="text" name="username" />
+					<label for="password">Password:</label>
+					<input type="password" name="password" />
+					<input type="submit" value="Log in" />
+				</form>
+				<span>Log in with <a href="/google"><img src="images/google_signin.png" alt="Sign in with Google"></a></span>
+			</div>
+		</header>
+		<main>
+		<header class="hero">
+		</header>
+		<section>
+			<h1 class="visible">Customize a New Pet</h1>
+			<div class="pet-creator">
+				<div class="pet-image">
+					<img src="images/finchet_blue.png" alt="Pet Preview">
+				</div>
+				<form class="pet-form" action="/create">
+					<label for="name">Name:</label>
+					<input type="text" name="name" />
+					<label for="species">Species:</label>
+					<select name="species">
+						<option value="finchet">Finchet</option>
+					</select>
+					<label for="color">Color:</label>
+					<select name="color">
+						<option value="blue">Blue</option>
+						<option value="blue">Red</option>
+						<option value="blue">Yellow</option>
+						<option value="blue">Green</option>
+					</select>
+					<input type="submit" value="Hatch your pet" />
+				</form>
+			</div>
+		</section>
+		</main>
+		<footer>
+			<small>&copy; 2016 Jamaican Hopscotch Mafia</small>
+		</footer>
+	</body>
+</html>
