@@ -6,10 +6,8 @@ module.exports = {
     client: 'pg',
     connection: 'postgres://localhost/griffinry'
   },
-
   production: {
     client: 'pg',
     connection: process.env.DATABASE_URL
   }
-
 };
