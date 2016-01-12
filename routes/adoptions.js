@@ -28,4 +28,11 @@ router.post('/add', function(req, res){
   })
 });
 
+router.get('/list/:id', function(req, res){
+  Adoptions().select().where('User_Id', req.params.id)
+  .then(function(list){
+    res.send(list);
+  })
+});
+
 module.exports = router;
