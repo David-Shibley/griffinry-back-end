@@ -34,17 +34,18 @@ router.get('/:id/edit', function(req, res) {
   }
 });
 
-router.put('/:id', function(req, res){
-  if (!req.user || req.params.id !== req.user.id) {
-      res.end('You do not have permision to edit this user');
-  } else {
+router.post('/:id', function(req, res){
+  if (req.user || req.params.id === req.user.id) {
     console.log("pw ", req.body.password);
     Users().where('id', req.params.id).update({
-      email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, 10)
+      User_Name: req.body.username,
+      DOB: req.body.DOB,
+      Password: bcrypt.hashSync(req.body.password, 10)
     }).then(function(){
       res.redirect('/' + req.params.id);
     });
+  } else {
+    res.end('You do not have permision to edit this user');
   }
 });
 
