@@ -16,6 +16,8 @@ var users = require('./routes/users');
 var auth = require('./routes/auth');
 var signup = require('./routes/signup');
 var resources = require('./routes/resources');
+var adoptions = require('./routes/adoptions');
+var pets = require('./routes/pets');
 
 require('dotenv').load();
 
@@ -88,6 +90,8 @@ app.use('/signup', signup);
 app.use('/', routes);
 app.use('/users', users);
 app.use('/resources', resources);
+app.use('/adoptions', adoptions);
+app.use('/pets', pets)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
