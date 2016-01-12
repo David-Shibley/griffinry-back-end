@@ -23,7 +23,7 @@ router.get('/:id', function(req, res) {
   //   .select('pets.id as pets_id')
   // })
   .then(function(adoptions) {
-    Pets().where('id', adoptions.Pet_Id)
+    Pets().where('id', adoptions.Pet_Id).returning('Type').first()
     .then(function(pet) {
       res.render('profile', {
         user_data: adoptions,
