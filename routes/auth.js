@@ -1,4 +1,5 @@
 var express = require('express');
+var app = express();
 var knex = require('../db/knex');
 var router = express.Router();
 var passport = require('passport');
@@ -17,17 +18,19 @@ router.get('/google/callback',
 
 router.post('/login', passport.authenticate('local', {failureRedirect: '/signup.html'}),
   function(req, res){
+    delete req.user.Password;
+    console.log(req.user);
     res.redirect('/dashboard');
 });
 
-router.get('/', function(req, res) {
-  Players().select().then(function(players){
-    res.render('players', {
-      title: 'Broncos Players',
-      players: players,
-      user: req.user
-    });
-  });
-});
-
+// router.get('/', function(req, res) {
+//   Players().select().then(function(players){
+//     res.render('players', {
+//       title: 'Broncos Players',
+//       players: players,
+//       user: req.user
+//     });
+//   });
+// });
+//
 module.exports = router;
