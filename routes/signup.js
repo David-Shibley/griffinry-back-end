@@ -21,7 +21,7 @@ router.post('/',function(req, res){
       Role: 'User',
       DOB: req.body.dob
     }, 'id').then(function(id){
-      res.redirect('/create_pet');
+      res.redirect('/create.html');
     });
   });
 
