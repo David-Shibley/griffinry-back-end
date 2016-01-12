@@ -28,4 +28,20 @@ router.post('/add', function(req, res){
   })
 });
 
+router.get('/list/:id', function(req, res){
+  Adoptions().select().where('User_Id', req.params.id)
+  .then(function(list){
+    res.send(list);
+  })
+});
+
+router.delete('/delete/:id', function(req, res){
+  Adoptions()
+  .where('id', req.params.id)
+  .del()
+  .then(function(result){
+    res.sendStatus(result);
+  });
+});
+
 module.exports = router;
