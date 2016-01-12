@@ -1,0 +1,25 @@
+.dash {
+  display: flex;
+  width: 100vw;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.dash figure {
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 2vw 10vw;
+}
+
+.dash figure img {
+  width: 100%;
+}
+
+.dash figcaption {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.dash figcaption p {
+  margin-top: 5px;
+}

@@ -1,0 +1,39 @@
+doctype html
+html
+  head
+    title Griffinry Dashboard
+    link(rel='stylesheet', href='css/main.css')
+    link(rel='stylesheet', href='css/dashboard.css')
+  body
+    header
+      h1 Griffinry
+      span
+        img(src='images/griffinry_logo.png', alt='Griffinry')
+      .user
+        form(action='/auth/login', method='POST')
+          label(for='username') Username:
+          input(type='text', name='username')
+          label(for='password') Password:
+          input(type='password', name='password')
+          input(type='submit', value='Log in')
+        span
+          | Log in with 
+          a(href='/google')
+            img(src='images/google_signin.png', alt='Sign in with Google')
+    main
+      header.hero
+      section(class="dash")
+        figure
+          a(href="/pets.html")
+            img(src="images/pets_link.png" alt="Griffinry pets")
+          figcaption 
+            h2 My Pets
+            p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commo
+        figure
+          a(href="/gather.html")
+            img(src="images/gather_link.png" alt="Griffinry gather")
+          figcaption 
+            h2 Go Hunting
+            p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commo
+      footer
+      small © 2016 Jamaican Hopscotch Mafia
