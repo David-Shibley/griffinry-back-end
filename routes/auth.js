@@ -15,7 +15,7 @@ router.get('/google/callback',
     res.redirect('/');
 });
 
-router.post('/login', passport.authenticate('local', {failureRedirect: '/login'}),
+router.post('/login', passport.authenticate('local', {failureRedirect: '/signup.html'}),
   function(req, res){
     res.redirect('/dashboard');
 });
