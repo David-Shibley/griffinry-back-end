@@ -2,7 +2,7 @@ $(document).ready(function() {
 	var petApi = '/pets/list';
 	
 	$.get(petApi, function (data) {
-		populateDropdowns(data.species, "species");
+		populateDropdowns(data.species, "petId");
 		populateDropdowns(data.colors, "color");
 	});
 
@@ -31,7 +31,7 @@ function selectionChange (event) {
 	imgPath = imgPath[imgPath.length - 1].replace('.png', '').split('_');
 
 	console.log(event.target.name);
-	if (event.target.name == "species") {
+	if (event.target.name == "petId") {
 		imgPath[0] = event.target.value.toLowerCase();
 	}
 	else if (event.target.name == "color") {
