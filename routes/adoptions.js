@@ -24,7 +24,8 @@ router.post('/add', function(req, res){
     Current_Energy: 5,
     Last_Updated: new Date()
   }, 'id').then(function(id){
-    res.send("Success. ID=" + id);
+    res.redirect('/dashboard')
+    // res.send("Success. ID=" + id);
   })
 });
 
