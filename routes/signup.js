@@ -8,15 +8,18 @@ function Users(){
   return knex('users');
 }
 
+// router.get('/', function(req, res){
+//   res.sendFile('singup.html');
+// });
 
 router.post('/',function(req, res){
-  bcrypt.hash(req.body.Password, 10, function(err, hash){
+  bcrypt.hash(req.body.password, 10, function(err, hash){
     Users().insert({
-      User_Name: req.body.User_Name,
-      Email: req.body.Email,
+      User_Name: req.body.username,
+      Email: req.body.email,
       Password: hash,
       Role: 'User',
-      DOB: req.body.DOB
+      DOB: req.body.dob
     }, 'id').then(function(id){
       res.redirect('/create_pet');
     });
