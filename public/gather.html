@@ -4,14 +4,14 @@
 		<title>Griffinry</title>
 		<link rel="stylesheet" href="css/main.css">
 		<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-		<script src="javascripts/createpet.js"></script>
+		<script src="javascripts/gather.js"></script>
 	</head>
 	<body>
 		<header>
 			<h1>Griffinry</h1>
 			<span><img src="images/griffinry_logo.png" alt="Griffinry"></span>
 			<div class="user">
-				<form action="/auth/login" method="post">
+				<form action="/auth/login" method="POST">
 					<label for="username">Username:</label>
 					<input type="text" name="username" />
 					<label for="password">Password:</label>
@@ -25,24 +25,7 @@
 		<header class="hero">
 		</header>
 		<section>
-			<h1 class="visible">Customize a New Pet</h1>
-			<div class="pet-creator">
-				<div class="pet-image">
-					<img src="images/finchet_green.png" alt="Pet Preview">
-				</div>
-				<form class="pet-form" action="/adoptions/add" method="post">
-					<input type="hidden" name="userId" value="1" />
-					<label for="name">Name:</label>
-					<input type="text" name="name" required="required" />
-					<label for="petId">Species:</label>
-					<select name="petId">
-					</select>
-					<label for="color">Color:</label>
-					<select name="color">
-					</select>
-					<input type="submit" value="Hatch your pet" />
-				</form>
-			</div>
+			<h1 class="visible">Go Hunting</h1>
 		</section>
 		</main>
 		<footer>
