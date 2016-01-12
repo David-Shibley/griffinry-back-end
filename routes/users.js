@@ -1,6 +1,7 @@
 var express = require('express');
 var knex = require('../db/knex');
 var router = express.Router();
+var bcrypt = require('bcrypt');
 
 function Users() {
   return knex('users');
@@ -23,37 +24,34 @@ router.get('/:id', function(req, res) {
 });
 
 router.get('/:id/edit', function(req, res) {
+  console.log('user ', req.user);
   if (req.user && req.params.id == req.user.id) {
-    Users().where('id', req.params.id).first()
-    .then(function(user) {
-      res.render('edit', {
-        user: user
-      });
+    res.render('edit', {
+      user: req.user
     });
   } else {
     res.end('You do not have permision to edit this user');
   }
 });
 
-router.post('/:id/edit', function(req, res){
-  if (req.user && req.params.id == req.user.id) {
-    Users().where('id', req.params.id).first()
-    .then(function(user){
-      Users().update({
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10)
-      }).then(function(){
-        res.redirect('/users/' + req.params.id);
-      });
-    });
+router.put('/:id', function(req, res){
+  if (!req.user || req.params.id !== req.user.id) {
+      res.end('You do not have permision to edit this user');
   } else {
-    res.end('You do not have permision to edit this user');
+    console.log("pw ", req.body.password);
+    Users().where('id', req.params.id).update({
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password, 10)
+    }).then(function(){
+      res.redirect('/' + req.params.id);
+    });
   }
 });
 
 
 router.get('/:id/delete', function(req, res) {
-  if (req.user && req.params.id == req.user.id) {
+  // append to 52: || req.user.Role == 'Administrator'
+  if (req.user && req.params.id === req.user.id) {
     Users().where('id', req.params.id).del().then(function() {
       res.redirect('/login');
     }).catch(function(err) {

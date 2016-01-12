@@ -2,11 +2,11 @@ extends layout
 
 block content
   main
-    form
+    form(action="/users/#{user.id}" _method="PUT")
       label(for="username") Username:
       input(type="text" id="username" value=user.User_Name)
       label(for="DOB") DOB:
-      input(type="text" id="DOB" value=user.DOB)
+      input(type="text" id="DOB" value=moment(user.DOB).format('MM/DD/YYYY'))
       label(for="password") Password:
       input(type="password" id="password" value=user.Password)
       button(type="submit") Update
