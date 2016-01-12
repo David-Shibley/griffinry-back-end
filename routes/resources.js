@@ -7,6 +7,10 @@ function Resources(){
   return knex('resources')
 };
 
+function User_Resources(){
+  return knex('user_resources');
+}
+
 function getRandomRarity(){
   var randomNumber = getRandomInt(1, 100);
 
@@ -29,6 +33,16 @@ router.get('/gather', function(req, res) {
     var randomNumber = getRandomInt(0, list.length-1);
     returnValue = list[randomNumber];
     res.send(returnValue);
+  });
+});
+
+router.get('/list/:id', function(req, res){
+  knex.select('*')
+  .from('user_resources')
+  .leftJoin('resources', 'user_resources.Resource_Id', 'resources.id')
+  .where('User_Id', req.params.id)
+  .then(function(result){
+    res.send(result);
   });
 });
 

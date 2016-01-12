@@ -35,4 +35,13 @@ router.get('/list/:id', function(req, res){
   })
 });
 
+router.delete('/delete/:id', function(req, res){
+  Adoptions()
+  .where('id', req.params.id)
+  .del()
+  .then(function(result){
+    res.sendStatus(result);
+  });
+});
+
 module.exports = router;
