@@ -10,7 +10,7 @@ $(document).ready(function () {
 		});
 		$('.gather-sites').click(function (event) {
 			selectedPet = selectGatherLocation(event.target.alt, selectedPet, user.id);
-		});	
+		});
 	});
 
 	$(document).click(function (event) {
@@ -21,12 +21,9 @@ $(document).ready(function () {
 		selectedPet = selectPet(event.target);
 	});
 
-<<<<<<< HEAD
 	$('.gather-sites').click(function (event) {
 		selectGatherLocation(event.target);
 	});
-=======
->>>>>>> b42c7174964f0af74f3b9bb8e03b1823fe0d453e
 });
 
 function getUser () {
@@ -47,7 +44,7 @@ function renderPetData (pet) {
 	var petEnergy = document.createElement('li');
 
 	petImage.src = 'images/' + pet.Pet_Id.toLowerCase() + '_' + pet.Color.toLowerCase() + '.png';
-	listItem.id = pet.id; 
+	listItem.id = pet.id;
 	petName.innerHTML = '<span class="pet-name">' + pet.Name + '</span>';
 	petEnergy.innerHTML = '<span class="pet-energy">' + pet.Current_Energy + '/' + pet.Max_Energy + '</span>';
 
@@ -93,7 +90,7 @@ function selectPet (target) {
 	}
 }
 
-function deselectPet () {	
+function deselectPet () {
 	$('li').removeClass('active');
 	return false;
 }
