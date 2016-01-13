@@ -60,6 +60,7 @@ passport.use(new LocalStrategy(
             }
           });
         }else{
+          console.log('User not found in db');
           return done('not registered');
         }
     });
