@@ -1,6 +1,3 @@
-var express = require('express');
-var router = express.Router();
-var passport = require('passport');
 var knex = require('../db/knex');
 
 function User_Resources(){
@@ -55,6 +52,13 @@ module.exports = {
       'User_Id': userId,
       'Resource_Id': resourceId
     }).count()
+  },
+
+  getUserResources: function(userId){
+    return knex.select('*')
+    .from('user_resources')
+    .leftJoin('resources', 'user_resources.Resource_Id', 'resources.id')
+    .where('User_Id', userId)
   },
 
   insertNewUserResource: function(userId, resourceId){
