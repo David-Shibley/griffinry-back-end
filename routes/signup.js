@@ -16,8 +16,11 @@ router.get('/', function(req, res){
   res.render('signup', {error: req.query.error});
 });
 
-router.post('/',function(req, res){
+router.post('/',function(req, res, next){
   bcrypt.hash(req.body.password, 10, function(err, hash){
+    if(err){
+      return next(err);
+    }
     Users().insert({
       User_Name: req.body.username,
       Email: req.body.email,
@@ -25,7 +28,19 @@ router.post('/',function(req, res){
       Role: 'User',
       DOB: req.body.dob
     }, 'id').then(function(id){
-      res.redirect('/create.html');
+      console.log(id);
+      Users().where('id', id[0]).then(function(user){
+        req.login(user, function(err){
+         if(!err){
+           res.redirect('/create.html');
+         }else{
+           res.redirect('/signup?error=' + err);
+         }
+      });
+      });
+      // res.redirect('/login');
+    }).catch(function(err){
+      res.render('signup', {error: err});
     });
   });
 
