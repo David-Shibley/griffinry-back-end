@@ -31,14 +31,14 @@
 					<img src="images/finchet_green.png" alt="Pet Preview">
 				</div>
 				<form class="pet-form" action="/adoptions/add" method="post">
-					<input type="hidden" name="userId" value="1" />
+					<input id="userId" type="hidden" name="userId" required="required" />
 					<label for="name">Name:</label>
-					<input type="text" name="name" required="required" />
+					<input id="name" type="text" name="name" required="required" />
 					<label for="petId">Species:</label>
-					<select name="petId">
+					<select id="petId" name="petId">
 					</select>
 					<label for="color">Color:</label>
-					<select name="color">
+					<select id="color" name="color">
 					</select>
 					<input type="submit" value="Hatch your pet" />
 				</form>
