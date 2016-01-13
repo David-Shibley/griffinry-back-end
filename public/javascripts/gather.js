@@ -11,7 +11,7 @@ $(document).ready(function () {
 
 	$('.gather-sites').click(function (event) {
 		selectGatherLocation(event.target);
-	});	
+	});
 });
 
 function renderPetData (pet) {

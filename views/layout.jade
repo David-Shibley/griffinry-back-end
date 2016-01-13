@@ -2,6 +2,9 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/css/main.css')
   body
+    include ./header.jade
+    header.hero
     block content
+    include ./footer.jade
