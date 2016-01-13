@@ -12,6 +12,10 @@ function Users(){
 //   res.sendFile('singup.html');
 // });
 
+router.get('/', function(req, res){
+  res.render('signup', {error: req.query.error});
+});
+
 router.post('/',function(req, res){
   bcrypt.hash(req.body.password, 10, function(err, hash){
     Users().insert({

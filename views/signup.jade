@@ -1,0 +1,69 @@
+doctype html
+html
+  head
+    title Griffinry
+    | &#x9;&#x9;
+    link(rel='stylesheet', href='css/main.css')
+  | &#x9;
+  body
+    header
+      h1 Griffinry
+      | &#x9;&#x9;&#x9;
+      
+      span
+        img(src='images/griffinry_logo.png', alt='Griffinry')
+      | &#x9;&#x9;&#x9;
+      .user
+        form(action='/auth/login', method='POST')
+          label(for='username') Username:
+          | &#x9;&#x9;&#x9;&#x9;&#x9;
+          input(type='text', name='username')
+          | &#x9;&#x9;&#x9;&#x9;&#x9;
+          label(for='password') Password:
+          | &#x9;&#x9;&#x9;&#x9;&#x9;
+          input(type='password', name='password')
+          | &#x9;&#x9;&#x9;&#x9;&#x9;
+          input(type='submit', value='Log in')
+        | &#x9;&#x9;&#x9;&#x9;
+        span
+          | Log in with 
+          a(href='/google')
+            img(src='images/google_signin.png', alt='Sign in with Google')
+    | &#x9;&#x9;
+    main
+      header.hero
+      | &#x9;&#x9;
+      section
+        #error
+        if error
+        h1.visible(class="error") #{error}
+        h1.visible Create an Account
+        | &#x9;&#x9;&#x9;
+        .signup-container
+          form.signup-form(action='/signup', method='POST')
+            label(for='username') Username:
+            | &#x9;&#x9;&#x9;&#x9;&#x9;
+            input(type='text', name='username')
+            | &#x9;&#x9;&#x9;&#x9;&#x9;
+            label(for='email') Email:
+            | &#x9;&#x9;&#x9;&#x9;&#x9;
+            input(type='text', name='email')
+            | &#x9;&#x9;&#x9;&#x9;&#x9;
+            label(for='password') Password:
+            | &#x9;&#x9;&#x9;&#x9;&#x9;
+            input(type='password', name='password')
+            | &#x9;&#x9;&#x9;&#x9;&#x9;
+            label(for='dob') Date of Birth
+            | &#x9;&#x9;&#x9;&#x9;&#x9;
+            input(type='date', name='dob')
+            | &#x9;&#x9;&#x9;&#x9;&#x9;
+            input(type='submit', value='Sign up')
+          | &#x9;&#x9;&#x9;&#x9;
+          div
+            p or
+            | &#x9;&#x9;&#x9;&#x9;&#x9;
+            a(href='/signup/google')
+              img(src='images/google_signup.png', alt='Sign up with Google')
+    | &#x9;&#x9;
+    footer
+      small &copy; 2016 Jamaican Hopscotch Mafia

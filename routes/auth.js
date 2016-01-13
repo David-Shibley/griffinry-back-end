@@ -16,11 +16,23 @@ router.get('/google/callback',
     res.redirect('/');
 });
 
-router.post('/login', passport.authenticate('local', {failureRedirect: '/signup.html'}),
-  function(req, res){
-    delete req.user.Password;
-    console.log(req.user);
-    res.redirect('/dashboard');
+router.post('/login',
+  function(req, res, next){
+     passport.authenticate('local', function(err, user, info){
+       if(err){
+         res.redirect('/signup?error=' + err);
+       }else if (user){
+         req.login(user, function(err){
+          if(!err){
+            res.redirect('/dashboard');
+          }else{
+            res.redirect('/signup?error=' + err);
+          }
+        });
+       }else{
+         res.redirect('/signup?error=No Password Provided');
+       }
+     })(req, res, next);
 });
 
 // router.get('/', function(req, res) {
@@ -32,5 +44,5 @@ router.post('/login', passport.authenticate('local', {failureRedirect: '/signup.
 //     });
 //   });
 // });
-//
+
 module.exports = router;
