@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	var petApi = '/pets/list';
-	
+
 	getUser();
 
 	$.get(petApi, function (data) {
@@ -16,7 +16,7 @@ $(document).ready(function() {
 function getUser () {
 	$.get('/userId', function(user) {
 		console.log(user);
-		$('#userId').val(user.id);	
+		$('#userId').val(user.id);
 		renderUserData(user);
 	});
 }
