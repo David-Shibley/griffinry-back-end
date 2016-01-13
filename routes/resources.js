@@ -2,14 +2,15 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var knex = require('../db/knex');
+var db_User_Resources = require('../bin/db_User_Resources');
 
 function Resources(){
   return knex('resources')
 };
-
-function User_Resources(){
-  return knex('user_resources');
-}
+// 
+// function User_Resources(){
+//   return knex('user_resources');
+// }
 
 function Adoptions(){
   return knex('adoptions');
@@ -44,42 +45,6 @@ function reducePetEnergy(adoptionId){
   })
 }
 
-function getUserResourcesCount(userId, resourceId){
-  return User_Resources().where({
-    'User_Id': userId,
-    'Resource_Id': resourceId
-  }).count()
-}
-
-function getUserResourceQuantity(userId, resourceId){
-  return User_Resources().where({
-    'User_Id': userId,
-    'Resource_Id': resourceId
-  }).first().select('Quantity')
-};
-
-function updateUserResourceQuantity(userId, resourceId, quantity){
-  return User_Resources().where({
-    User_Id: userId,
-    Resource_Id: resourceId
-  }).update({'Quantity': quantity})
-};
-
-function insertNewUserResource(userId, resourceId){
-  return User_Resources().insert({
-    User_Id: userId,
-    Resource_Id: resourceId,
-    Quantity: 1
-  })
-};
-
-function deleteUserResource(userId, resourceId){
-  return User_Resources().where({
-    'User_Id': userId,
-    'Resource_Id': resourceId
-  }).del()
-};
-
 router.get('/gather', function(req, res) {
   if (req.query.userId === undefined) {
     res.send("ERROR: A userId is reqiured on the query string.");
@@ -107,21 +72,21 @@ router.get('/gather', function(req, res) {
     returnObject.resource = list[randomNumber];
   })
   .then(function(){
-    getUserResourcesCount(userId, resourceId)
+    db_User_Resources.getUserResourcesCount(userId, resourceId)
     .then(function(result){
       var currentCount = Number(result[0].count);
       if (currentCount === 0) {
-        insertNewUserResource(userId, resourceId)
+        db_User_Resources.insertNewUserResource(userId, resourceId)
         .then(function(result){
           returnObject.newQuantity = 1;
           res.send(returnObject)
         })
       } else {
-        getUserResourceQuantity(userId, resourceId)
+        db_User_Resources.getUserResourceQuantity(userId, resourceId)
         .then(function(result){
           var quantity = result.Quantity;
           quantity += 1;
-          updateUserResourceQuantity(userId, resourceId, quantity)
+          db_User_Resources.updateUserResourceQuantity(userId, resourceId, quantity)
           .then(function(result){
             returnObject.newQuantity = quantity;
             res.send(returnObject);
@@ -156,22 +121,9 @@ router.get('/use', function(req, res){
   var userId = req.query.userId;
   var resourceId = req.query.resourceId;
 
-  getUserResourceQuantity(userId, resourceId)
-  .then(function(result){
-    var quantity = result.Quantity;
-    if (quantity == 1) {
-      deleteUserResource(userId, resourceId)
-      .then(function(result){
-        res.send(result);
-      })
-    } else {
-      quantity -= 1;
-      updateUserResourceQuantity(userId, resourceId, quantity)
-      .then(function(result){
-        res.send(result)
-      })
-    }
-  })
+  db_User_Resources.useResource(userId, resourceId).then(function(result){
+    res.send(result);
+  });
 });
 
 module.exports = router;
