@@ -21,6 +21,16 @@ var pets = require('./routes/pets');
 var dashboard = require('./routes/dashboard');
 var userId = require('./routes/api');
 
+function isAuthenticated(req, res, next){
+  console.log(req.originalUrl);
+  if(req.isAuthenticated()){
+    next();
+  }else{
+    res.status(401);
+    res.redirect('/');
+  }
+}
+
 require('dotenv').load();
 
 var app = express();
@@ -78,15 +88,20 @@ app.use(bodyParser.json());
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: true,
-  saveUninitialized: false
+  saveUninitialized: true
 }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.moment = require('moment');
+app.use(function(req, res, next){
+  app.locals.user = req.user;
+  next();
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', auth);
 app.use('/signup', signup);
@@ -95,7 +110,7 @@ app.use('/users', users);
 app.use('/resources', resources);
 app.use('/adoptions', adoptions);
 app.use('/pets', pets);
-app.use('/dashboard', dashboard);
+app.use('/dashboard', isAuthenticated, dashboard);
 app.use('/userId', userId);
 
 // catch 404 and forward to error handler
