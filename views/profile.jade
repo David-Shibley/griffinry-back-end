@@ -11,6 +11,7 @@ block content
         p Delete
         img(class='edit_button' src='/images/delete.jpg') 
     p(class='row') Age: #{moment(user_data[0].DOB).fromNow(true)} old
+    p(class='row') About Me: #{user_data[0].About_Me} old
     h2(class='row') My Pets
     ul(class='row')
     each pet in user_data
