@@ -67,6 +67,40 @@ body, html {
   display: flex;
   flex-direction: column; }
 
+.pet-list {
+  margin: 0.5rem auto;
+  width: 80%;
+  text-align: center; }
+  .pet-list ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around; }
+    .pet-list ul li {
+      display: flex;
+      flex-direction: column; }
+  .pet-list img {
+    margin: 0.5rem;
+    border-radius: 50%;
+    width: 6rem;
+    height: 6rem;
+    cursor: pointer; }
+
+.gather-sites {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  cursor: pointer; }
+
+.active > img {
+  box-shadow: 0px 0px 1rem 0.1rem blue; }
+
+.inactive > img {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%); }
+
+.empty {
+  color: red; }
+
 .visible {
   margin-top: 1rem;
   display: block;
@@ -103,6 +137,10 @@ main {
       main ul li span {
         flex-flow: column wrap;
         display: inline-block; }
+
+aside {
+  margin: 0 auto;
+  width: 60%; }
 
 footer {
   margin-top: 1rem;

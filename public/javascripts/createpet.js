@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	var petApi = '/pets/list';
 	
+	getUser();
+
 	$.get(petApi, function (data) {
 		populateDropdowns(data.species, "petId");
 		populateDropdowns(data.colors, "color");
@@ -10,6 +12,12 @@ $(document).ready(function() {
 		selectionChange(event);
 	});
 });
+
+function getUser () {
+	$.get('/userId', function(user) {
+		$('#userId').val(user);	
+	});
+}
 
 function populateDropdowns (optionArray, nameString) {
 	var dropdownSelector = 'select[name=' + nameString + ']';
