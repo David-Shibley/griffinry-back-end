@@ -4,6 +4,19 @@ function Adoptions(){
   return knex('adoptions')
 };
 
+function Get_Experience(adoptionId){
+  return Adoptions()
+         .where('id', adoptionId)
+         .select('Experience')
+         .first()
+};
+
+function Set_Experience(adoptionId, amount){
+  return Adoptions()
+         .where('id', adoptionId)
+         .update('Experience', amount)
+};
+
 module.exports = {
   getPetMaxHealth: function(adoptionId){
     return Adoptions().where('id', adoptionId).select('Max_Health').first()
@@ -51,5 +64,15 @@ module.exports = {
     return Adoptions()
            .where({'id': adoptionId})
            .update({'Current_Energy': energy})
+  },
+
+  increaseExperience: function(adoptionId, newExperience){
+    var experience = 0;
+    return Get_Experience(adoptionId).then(function(result){
+      experience = result.Experience;
+      experience += newExperience;
+      Set_Experience(adoptionId, experience).then(function(){
+      })
+    })
   }
 }

@@ -70,8 +70,7 @@ router.get('/gather', function(req, res) {
         .then(function(result){
           var quantity = result.Quantity;
           quantity += 1;
-          db_User_Resources.updateUserResourceQuantity(userId, resourceId, quantity)
-          .then(function(result){
+          db_User_Resources.updateUserResourceQuantity(userId, resourceId, quantity).then(function(result){
             returnObject.newQuantity = quantity;
             res.send(returnObject);
           })
@@ -79,6 +78,9 @@ router.get('/gather', function(req, res) {
       } // end if statement
     }).then(function(){
       reducePetEnergy(adoptionId);
+    }).then(function(){
+      db_Adoptions.increaseExperience(adoptionId, 1).then(function(){
+      });
     })
   })
 });
