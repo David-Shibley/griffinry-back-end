@@ -2,6 +2,7 @@ $(document).ready(function () {
 	var selectedPet;
 
 	getUser().then(function (user) {
+		renderUserData(user);
 		var adoptionsApi = '/adoptions/list/' + user.id;
 		$.get(adoptionsApi, function (data) {
 			for (var i in data) {
@@ -21,6 +22,9 @@ $(document).ready(function () {
 		selectedPet = selectPet(event.target);
 	});
 
+	$('.hamburger').click(function () {
+		$('.user-dropdown').toggle('fast');
+	});
 });
 
 function getUser () {
@@ -29,6 +33,12 @@ function getUser () {
 			resolve(user);
 		});
 	});
+}
+
+function renderUserData(user) {
+ var profilePath = '/users/' + user.id;
+	$('.username').text(user.username);
+	$('.profile-link>a').attr('href', profilePath);
 }
 
 function renderPetData (pet) {
