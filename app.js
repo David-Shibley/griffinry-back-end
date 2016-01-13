@@ -19,6 +19,7 @@ var resources = require('./routes/resources');
 var adoptions = require('./routes/adoptions');
 var pets = require('./routes/pets');
 var dashboard = require('./routes/dashboard');
+var userId = require('./routes/api');
 
 function isAuthenticated(req, res, next){
   if(req.isAuthenticated()){
@@ -109,8 +110,7 @@ app.use('/resources', resources);
 app.use('/adoptions', adoptions);
 app.use('/pets', pets);
 app.use('/dashboard', isAuthenticated, dashboard);
-
-
+app.use('/userId', userId);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
