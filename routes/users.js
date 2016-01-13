@@ -14,7 +14,7 @@ function Adoptions() {
 router.get('/:id', function(req, res) {
   Users().where('users.id', req.params.id)
   .select('users.User_Name', 'users.DOB', 'users.About_Me', 'users.id', 'adoptions.Name', 'adoptions.Pet_Id', 'adoptions.Color', 'adoptions.id as adoptions_id')
-  .innerJoin('adoptions', 'adoptions.User_Id', 'users.id').first()
+  .innerJoin('adoptions', 'adoptions.User_Id', 'users.id')
   .then(function(adoptions) {
       console.log('adoptions', adoptions);
       res.render('profile', {
