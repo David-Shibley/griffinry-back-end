@@ -43,7 +43,7 @@ router.post('/:id', function(req, res){
       About_Me: req.body.about,
       Password: bcrypt.hashSync(req.body.password, 10)
     }).then(function(){
-      res.redirect('/' + req.params.id);
+      res.redirect('/users/' + req.params.id);
     });
   } else {
     res.end('You do not have permision to edit this user');
