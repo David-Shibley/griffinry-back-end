@@ -3,13 +3,13 @@ header
   span
     img(src='/images/griffinry_logo.png', alt='Griffinry')
   .user
-    form(action='/auth/login', method='POST')
-      label(for='username') Username:
-      input(type='text', name='username')
-      label(for='password') Password:
-      input(type='password', name='password')
-      input(type='submit', value='Log in')
-    span
-      | Log in with 
-      a(href='/google')
-        img(src='/images/google_signin.png', alt='Sign in with Google')
+    h2.username #{user.User_Name}
+    img.hamburger(src='/images/hamburger.png', alt='user menu')
+    .user-dropdown
+      ul
+        li
+          a(href='/dashboard') Dashboard
+        li.profile-link
+          a(href='#') Profile
+        li
+          a(href='/auth/logout') Logout
