@@ -21,6 +21,12 @@ $(document).ready(function () {
 		selectedPet = selectPet(event.target);
 	});
 
+<<<<<<< HEAD
+	$('.gather-sites').click(function (event) {
+		selectGatherLocation(event.target);
+	});
+=======
+>>>>>>> b42c7174964f0af74f3b9bb8e03b1823fe0d453e
 });
 
 function getUser () {

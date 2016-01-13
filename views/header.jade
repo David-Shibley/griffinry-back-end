@@ -1,0 +1,15 @@
+header
+  h1 Griffinry
+  span
+    img(src='/images/griffinry_logo.png', alt='Griffinry')
+  .user
+    form(action='/auth/login', method='POST')
+      label(for='username') Username:
+      input(type='text', name='username')
+      label(for='password') Password:
+      input(type='password', name='password')
+      input(type='submit', value='Log in')
+    span
+      | Log in with 
+      a(href='/google')
+        img(src='/images/google_signin.png', alt='Sign in with Google')

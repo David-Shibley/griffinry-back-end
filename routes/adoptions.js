@@ -25,6 +25,7 @@ function increasePetHealth(adoptionId, amount){
 }
 
 router.post('/add', function(req, res){
+  console.log(req.body);
   Adoptions().insert({
     User_Id: req.body.userId,
     Pet_Id: req.body.petId,
