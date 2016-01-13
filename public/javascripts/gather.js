@@ -1,15 +1,15 @@
 $(document).ready(function () {
 	var selectedPet;
 
-	getUser().then(function (userId) {
-		var adoptionsApi = '/adoptions/list/' + userId;
+	getUser().then(function (user) {
+		var adoptionsApi = '/adoptions/list/' + user.id;
 		$.get(adoptionsApi, function (data) {
 			for (var i in data) {
 				renderPetData(data[i]);
 			}
 		});
 		$('.gather-sites').click(function (event) {
-			selectedPet = selectGatherLocation(event.target.alt, selectedPet, userId);
+			selectedPet = selectGatherLocation(event.target.alt, selectedPet, user.id);
 		});	
 	});
 
