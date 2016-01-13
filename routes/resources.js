@@ -1,20 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var knex = require('../db/knex');
-var db_User_Resources = require('../bin/db_User_Resources');
-
-function Resources(){
-  return knex('resources')
-};
-// 
-// function User_Resources(){
-//   return knex('user_resources');
-// }
-
-function Adoptions(){
-  return knex('adoptions');
-}
+var db_User_Resources = require('../bin/db_user_resources');
+var db_Resources = require('../bin/db_resources');
+var db_Adoptions = require('../bin/db_adoptions');
 
 function getRandomRarity(){
   var randomNumber = getRandomInt(1, 100);
@@ -33,14 +22,11 @@ function getRandomInt(min, max){
 };
 
 function reducePetEnergy(adoptionId){
-  return Adoptions().select('Current_Energy').where('id', adoptionId).first()
-  .then(function(result){
+  return db_Adoptions.getCurrentEnergy(adoptionId).then(function(result){
     var energy = result.Current_Energy;
     if (energy > 0) {
       energy -= 1;
-      Adoptions().where({'id': adoptionId})
-      .update({'Current_Energy': energy})
-      .then(function(){});
+      db_Adoptions.setCurrentEnergy(adoptionId, energy).then(function(){});
     }
   })
 }
@@ -65,13 +51,11 @@ router.get('/gather', function(req, res) {
   var returnObject = {};
 
   var randRarity = getRandomRarity();
-  Resources().select().where('Rarity', randRarity)
-  .then(function(list){
+  db_Resources.getResourceList(randRarity).then(function(list){
     var randomNumber = getRandomInt(0, list.length-1);
     resourceId = list[randomNumber].id;
     returnObject.resource = list[randomNumber];
-  })
-  .then(function(){
+  }).then(function(){
     db_User_Resources.getUserResourcesCount(userId, resourceId)
     .then(function(result){
       var currentCount = Number(result[0].count);
@@ -86,8 +70,7 @@ router.get('/gather', function(req, res) {
         .then(function(result){
           var quantity = result.Quantity;
           quantity += 1;
-          db_User_Resources.updateUserResourceQuantity(userId, resourceId, quantity)
-          .then(function(result){
+          db_User_Resources.updateUserResourceQuantity(userId, resourceId, quantity).then(function(result){
             returnObject.newQuantity = quantity;
             res.send(returnObject);
           })
@@ -95,16 +78,15 @@ router.get('/gather', function(req, res) {
       } // end if statement
     }).then(function(){
       reducePetEnergy(adoptionId);
+    }).then(function(){
+      db_Adoptions.increaseExperience(adoptionId, 1).then(function(){
+      });
     })
   })
 });
 
 router.get('/list/:id', function(req, res){
-  knex.select('*')
-  .from('user_resources')
-  .leftJoin('resources', 'user_resources.Resource_Id', 'resources.id')
-  .where('User_Id', req.params.id)
-  .then(function(result){
+  db_User_Resources.getUserResources(req.params.id).then(function(result){
     res.send(result);
   });
 });

@@ -2,13 +2,14 @@ extends layout
 
 block content
   main
-    form(action="/users/#{user.id}" method="POST")
-      label(for="username") Username:
-      input(type="text" name="username" id="username" value=user.User_Name)
-      label(for="about") About:
-      input(type="text" name="about" id="about" value=user.About_Me)
-      label(for="DOB") DOB:
-      input(type="text" name="DOB" id="DOB" value=moment(user.DOB).format('MM/DD/YYYY'))
-      label(for="password") Password:
-      input(type="password" name="password" id="password" value="")
-      button(type="submit") Update
+    .signup-container
+      form.signup-form(action="/users/#{user.id}" method="POST")
+        label(for="username") Username:
+        input(type="text" name="username" id="username" value='#{user.User_Name}')
+        label(for="about") About:
+        input(type="text" name="about" id="about" value='#{user.About_Me}')
+        label(for="DOB") DOB:
+        input(type="text" name="DOB" id="DOB" value=moment(user.DOB).format('MM/DD/YYYY'))
+        label(for="password") Password:
+        input(type="password" name="password" id="password" value="")
+        button(type="submit") Update
