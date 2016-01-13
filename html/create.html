@@ -11,14 +11,6 @@
 			<h1>Griffinry</h1>
 			<span><img src="images/griffinry_logo.png" alt="Griffinry"></span>
 			<div class="user">
-				<form action="/auth/login" method="POST">
-					<label for="username">Username:</label>
-					<input type="text" name="username" />
-					<label for="password">Password:</label>
-					<input type="password" name="password" />
-					<input type="submit" value="Log in" />
-				</form>
-				<span>Log in with <a href="/google"><img src="images/google_signin.png" alt="Sign in with Google"></a></span>
 			</div>
 		</header>
 		<main>
@@ -31,14 +23,14 @@
 					<img src="images/finchet_green.png" alt="Pet Preview">
 				</div>
 				<form class="pet-form" action="/adoptions/add" method="post">
-					<input type="hidden" name="userId" value="1" />
+					<input id="userId" type="hidden" name="userId" required="required" value="" />
 					<label for="name">Name:</label>
-					<input type="text" name="name" required="required" />
+					<input id="name" type="text" name="name" required="required" />
 					<label for="petId">Species:</label>
-					<select name="petId">
+					<select id="petId" name="petId">
 					</select>
 					<label for="color">Color:</label>
-					<select name="color">
+					<select id="color" name="color">
 					</select>
 					<input type="submit" value="Hatch your pet" />
 				</form>

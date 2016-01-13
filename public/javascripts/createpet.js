@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	var petApi = '/pets/list';
 	
+	getUser();
+
 	$.get(petApi, function (data) {
 		populateDropdowns(data.species, "petId");
 		populateDropdowns(data.colors, "color");
@@ -10,6 +12,21 @@ $(document).ready(function() {
 		selectionChange(event);
 	});
 });
+
+function getUser () {
+	$.get('/userId', function(user) {
+		console.log(user);
+		$('#userId').val(user.id);	
+		renderUserData(user);
+	});
+}
+
+function renderUserData(user) {
+	var userName = document.createElement('span');
+	userName.innerText = user.username;
+
+	$('.user').append(userName);
+}
 
 function populateDropdowns (optionArray, nameString) {
 	var dropdownSelector = 'select[name=' + nameString + ']';

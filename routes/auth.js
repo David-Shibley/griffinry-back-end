@@ -1,4 +1,5 @@
 var express = require('express');
+var app = express();
 var knex = require('../db/knex');
 var router = express.Router();
 var passport = require('passport');
