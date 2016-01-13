@@ -21,6 +21,36 @@ body, html {
 	margin-right: 1rem;
 	padding: 0.5rem;
 	border-radius: 10px 10px 0 0;
+	position: relative;
+	h2 {
+		margin-left: 1rem;
+		font-size: 1rem;
+		flex-grow: 1;
+	}
+	.hamburger {
+		width: 2rem;
+		margin: 1rem;
+		cursor: pointer;
+	}
+	.user-dropdown {
+		display:none;
+		ul {
+			list-style: none;
+			li {
+				margin: 0.4rem auto
+			}
+		}
+		position: absolute;
+		top: 4rem;
+		right: 0.5rem;
+		background-color: #2fb8ac;
+		padding: 1rem;
+		border: 1px solid #046d8b;
+		a {
+			text-decoration: none;
+			color: #e9e9e4;
+		}
+	}
 	form {
 		display: inline-block;
 		input {
@@ -106,7 +136,7 @@ body, html {
 }
 
 .active>img {
-	box-shadow: 0px 0px 1rem 0.1rem blue;
+	box-shadow: 0px 0px 1rem 0.1rem #046d8b;
 }
 
 .inactive>img {

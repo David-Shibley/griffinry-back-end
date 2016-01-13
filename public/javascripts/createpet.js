@@ -11,6 +11,10 @@ $(document).ready(function() {
 	$('select').on('change', function (event) {
 		selectionChange(event);
 	});
+
+	$('.hamburger').click(function () {
+		$('.user-dropdown').toggle('fast');
+	});
 });
 
 function getUser () {
@@ -22,10 +26,9 @@ function getUser () {
 }
 
 function renderUserData(user) {
-	var userName = document.createElement('span');
-	userName.innerText = user.username;
-
-	$('.user').append(userName);
+	var profilePath = '/users/' + user.id;
+ 	$('.username').text(user.username);
+ 	$('.profile-link>a').attr('href', profilePath);
 }
 
 function populateDropdowns (optionArray, nameString) {

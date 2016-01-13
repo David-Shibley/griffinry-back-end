@@ -11,14 +11,15 @@
 			<h1>Griffinry</h1>
 			<span><img src="images/griffinry_logo.png" alt="Griffinry"></span>
 			<div class="user">
-				<form action="/auth/login" method="POST">
-					<label for="username">Username:</label>
-					<input type="text" name="username" />
-					<label for="password">Password:</label>
-					<input type="password" name="password" />
-					<input type="submit" value="Log in" />
-				</form>
-				<span>Log in with <a href="/google"><img src="images/google_signin.png" alt="Sign in with Google"></a></span>
+				 <h2 class="username"></h2>
+				 <img class="hamburger" src="images/hamburger.png" alt="user menu">
+				 <div class="user-dropdown">
+					<ul>
+						<li><a href="/dashboard">Dashboard</a></li>
+						<li class="profile-link"><a href="#">Profile</a></li>
+						<li><a href="/auth/logout">Logout</a></li>
+					</ul>
+				 </div>
 			</div>
 		</header>
 		<main>
@@ -28,12 +29,8 @@
 			<h1 class="visible">Go Hunting</h1>
 			<div class="pet-list">
 				<ul>
-<<<<<<< HEAD:public/gather.html
-				</ul>
-=======
 					<!-- pets go here -->
 				</ul>		
->>>>>>> b42c7174964f0af74f3b9bb8e03b1823fe0d453e:html/gather.html
 			</div>
 			<aside>
 				<p>
