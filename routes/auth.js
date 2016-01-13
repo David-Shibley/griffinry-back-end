@@ -15,19 +15,33 @@ router.get('/google/callback',
     res.redirect('/');
 });
 
-router.post('/login', passport.authenticate('local', {failureRedirect: '/signup.html'}),
-  function(req, res){
-    res.redirect('/dashboard');
+router.post('/login',
+  function(req, res, next){
+     passport.authenticate('local', function(err, user, info){
+       if(err){
+         res.redirect('/signup?error=' + err);
+       }else if (user){
+         req.login(user, function(err){
+          if(!err){
+            res.redirect('/dashboard');
+          }else{
+            res.redirect('/signup?error=' + err);
+          }
+        });
+       }else{
+         res.redirect('/signup?error=No Password Provided');
+       }
+     })(req, res, next);
 });
 
-router.get('/', function(req, res) {
-  Players().select().then(function(players){
-    res.render('players', {
-      title: 'Broncos Players',
-      players: players,
-      user: req.user
-    });
-  });
-});
+// router.get('/', function(req, res) {
+//   Players().select().then(function(players){
+//     res.render('players', {
+//       title: 'Broncos Players',
+//       players: players,
+//       user: req.user
+//     });
+//   });
+// });
 
 module.exports = router;
