@@ -1,12 +1,18 @@
 $(document).ready(function () {
 	var selectedPet;
 
-	$.get('/adoptions/list/1', function (data) {
-		for (var i in data) {
-			renderPetData(data[i]);
-		}
+	getUser().then(function (userId) {
+		var adoptionsApi = '/adoptions/list/' + userId;
+		$.get(adoptionsApi, function (data) {
+			for (var i in data) {
+				renderPetData(data[i]);
+			}
+		});
+		$('.gather-sites').click(function (event) {
+			selectedPet = selectGatherLocation(event.target.alt, selectedPet, userId);
+		});	
 	});
-	
+
 	$(document).click(function (event) {
 		$('.info-window').css('display', 'none');
 	});
@@ -15,10 +21,15 @@ $(document).ready(function () {
 		selectedPet = selectPet(event.target);
 	});
 
-	$('.gather-sites').click(function (event) {
-		selectedPet = selectGatherLocation(event.target.alt, selectedPet);
-	});	
 });
+
+function getUser () {
+	return new Promise (function (resolve, reject) {
+		$.get('/userId', function (user) {
+			resolve(user);
+		});
+	});
+}
 
 function renderPetData (pet) {
 	var $petList = $('.pet-list>ul');
@@ -81,7 +92,7 @@ function deselectPet () {
 	return false;
 }
 
-function selectGatherLocation (location, selectedPet) {
+function selectGatherLocation (location, selectedPet, userId) {
 	var searchLocation;
 	if (location === "Forest") {
 		searchLocation = 1;
@@ -91,7 +102,7 @@ function selectGatherLocation (location, selectedPet) {
 			method: 'get',
 			url: '/resources/gather',
 			data: {
-				userId: 1,
+				userId: userId,
 				adoptionId: selectedPet,
 				locationId: searchLocation
 			}
