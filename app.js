@@ -19,6 +19,7 @@ var resources = require('./routes/resources');
 var adoptions = require('./routes/adoptions');
 var pets = require('./routes/pets');
 var dashboard = require('./routes/dashboard');
+var userId = require('./routes/api');
 
 require('dotenv').load();
 
@@ -60,6 +61,7 @@ passport.use(new LocalStrategy(
             }
           });
         }else{
+          console.log('User not found in db');
           return done('not registered');
         }
     });
@@ -94,6 +96,7 @@ app.use('/resources', resources);
 app.use('/adoptions', adoptions);
 app.use('/pets', pets);
 app.use('/dashboard', dashboard);
+app.use('/userId', userId);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
