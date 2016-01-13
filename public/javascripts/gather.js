@@ -1,16 +1,22 @@
 $(document).ready(function () {
+	var selectedPet;
+
 	$.get('/adoptions/list/1', function (data) {
 		for (var i in data) {
 			renderPetData(data[i]);
 		}
 	});
+	
+	$(document).click(function (event) {
+		$('.info-window').css('display', 'none');
+	});
 
-	$('.pet-list>ul>li').click(function (event) {
-		selectPet(event.target);
+	$('.pet-list').click(function (event) {
+		selectedPet = selectPet(event.target);
 	});
 
 	$('.gather-sites').click(function (event) {
-		selectGatherLocation(event.target);
+		selectedPet = selectGatherLocation(event.target.alt, selectedPet);
 	});	
 });
 
@@ -24,21 +30,82 @@ function renderPetData (pet) {
 	var petEnergy = document.createElement('li');
 
 	petImage.src = 'images/' + pet.Pet_Id.toLowerCase() + '_' + pet.Color.toLowerCase() + '.png';
-	petName.innerHtml = '<span>' + pet.Name + '</span>';
-	petEnergy.innerHtml = '<span>' + pet.Current_Energy + '/' + pet.Max_Energy + '</span>';
+	listItem.id = pet.id; 
+	petName.innerHTML = '<span class="pet-name">' + pet.Name + '</span>';
+	petEnergy.innerHTML = '<span class="pet-energy">' + pet.Current_Energy + '/' + pet.Max_Energy + '</span>';
 
-	petStats.appendChild(petName);
-	petStats.appendChild(petEnergy);
 	listItem.appendChild(petImage);
 	listItem.appendChild(petStats);
+	petStats.appendChild(petName);
+	petStats.appendChild(petEnergy);
 
 	$petList.append(listItem);
+
+	updatePetEnergy(pet.id);
+}
+
+function updatePetEnergy (petId, modifier) {
+	var energyElement = '#' + petId + ' .pet-energy';
+	var energy = $(energyElement).text().split('/');
+	if (modifier) {
+		energy[0] = parseInt(energy[0]) - modifier;
+		energy = energy[0] + '/' + energy[1];
+		$(energyElement).text(energy);
+	}
+	if (energy[0] === '0') {
+		setInactive(petId);
+		$(energyElement).addClass('empty');
+	}
+}
+
+function setInactive (petId) {
+	var petElement = '#' + petId;
+	$(petElement).removeClass('active');
+	$(petElement).addClass('inactive');
 }
 
 function selectPet (target) {
-	console.log(target);
+	if (target.parentNode.className !== 'inactive') {
+		if (target.parentNode.className !== 'active') {
+			$('li').removeClass('active');
+			$(target.parentNode).addClass('active');
+			return target.parentNode.id;
+		} else {
+			return deselectPet();
+		}
+	}
 }
 
-function selectGatherLocation (target) {
-	console.log(target.alt);
+function deselectPet () {	
+	$('li').removeClass('active');
+	return false;
+}
+
+function selectGatherLocation (location, selectedPet) {
+	var searchLocation;
+	if (location === "Forest") {
+		searchLocation = 1;
+	}
+	if (selectedPet) {
+		$.ajax({
+			method: 'get',
+			url: '/resources/gather',
+			data: {
+				userId: 1,
+				adoptionId: selectedPet,
+				locationId: searchLocation
+			}
+		}).done(function (results) {
+			renderGatherResults(results.resource);
+			deselectPet();
+			updatePetEnergy(selectedPet, 1);
+			return false;
+		});
+	}
+}
+
+function renderGatherResults (results) {
+	$('.info-window').css('display', 'block');
+
+	$('.info-window')[0].innerHTML = '<p>You found ' + results.Name + '!</p>';
 }
