@@ -15,8 +15,17 @@ $(document).ready(function() {
 
 function getUser () {
 	$.get('/userId', function(user) {
-		$('#userId').val(user);	
+		console.log(user);
+		$('#userId').val(user.id);	
+		renderUserData(user);
 	});
+}
+
+function renderUserData(user) {
+	var userName = document.createElement('span');
+	userName.innerText = user.username;
+
+	$('.user').append(userName);
 }
 
 function populateDropdowns (optionArray, nameString) {
