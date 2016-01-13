@@ -35,6 +35,11 @@ router.post('/login',
      })(req, res, next);
 });
 
+router.get('/logout', function(req, res, next){
+  req.logout();
+  res.redirect('/');
+});
+
 // router.get('/', function(req, res) {
 //   Players().select().then(function(players){
 //     res.render('players', {

@@ -11,7 +11,7 @@ $(document).ready(function () {
 		});
 		$('.gather-sites').click(function (event) {
 			selectedPet = selectGatherLocation(event.target.alt, selectedPet, user.id);
-		});	
+		});
 	});
 
 	$(document).click(function (event) {
@@ -51,7 +51,7 @@ function renderPetData (pet) {
 	var petEnergy = document.createElement('li');
 
 	petImage.src = 'images/' + pet.Pet_Id.toLowerCase() + '_' + pet.Color.toLowerCase() + '.png';
-	listItem.id = pet.id; 
+	listItem.id = pet.id;
 	petName.innerHTML = '<span class="pet-name">' + pet.Name + '</span>';
 	petEnergy.innerHTML = '<span class="pet-energy">' + pet.Current_Energy + '/' + pet.Max_Energy + '</span>';
 
@@ -97,7 +97,7 @@ function selectPet (target) {
 	}
 }
 
-function deselectPet () {	
+function deselectPet () {
 	$('li').removeClass('active');
 	return false;
 }
