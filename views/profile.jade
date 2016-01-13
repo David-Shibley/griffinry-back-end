@@ -4,11 +4,11 @@ block content
   main(class='col')
     div.user-data.row
       h1 #{user_data[0].User_Name}
-      a(class='button', href='/user/#{user_data[0].id}/edit') Edit
-      a(class='button', href='/user/#{user_data[0].id}/delete') Delete
+      a(class='button', href='/user/#{user_data[0].id}/edit'): img(class='edit_button' src='/images/update.jpg')
+      a(class='button', href='/user/#{user_data[0].id}/delete'): img(class='delete_button' src='/images/delete.jpg')
     p(class='row') Age: #{moment(user_data[0].DOB).fromNow(true)} old
     h2(class='row') My Pets
     ul(class='row')
     each pet in user_data
-      li.col-3 #{pet.Color} #{pet.Name} #{user_pet}
-      img(src='/images/test1.gif')
+      li.col-3 #{pet.Color} #{pet.Name} #{pet.Pet_Type}
+      img(src='/images/1_Yellow.png')
