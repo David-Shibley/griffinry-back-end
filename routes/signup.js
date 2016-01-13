@@ -13,6 +13,9 @@ function Users(){
 // });
 
 router.get('/', function(req, res){
+  if(req.isAuthenticated()){
+  res.redirect('/dashboard');
+  }
   res.render('signup', {error: req.query.error});
 });
 

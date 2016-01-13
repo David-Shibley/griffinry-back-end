@@ -22,11 +22,12 @@ var dashboard = require('./routes/dashboard');
 var userId = require('./routes/api');
 
 function isAuthenticated(req, res, next){
+  console.log(req.originalUrl);
   if(req.isAuthenticated()){
     next();
   }else{
     res.status(401);
-    res.redirect('/signup.html');
+    res.redirect('/');
   }
 }
 
@@ -93,13 +94,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.moment = require('moment');
 app.use(function(req, res, next){
   app.locals.user = req.user;
   next();
 });
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', auth);
 app.use('/signup', signup);
