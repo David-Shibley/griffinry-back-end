@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var knex = require('../db/knex');
+var db_User_Resources = require('../bin/db_User_Resources');
 
 function Pets(){
   return knex('pets');
@@ -53,20 +54,26 @@ router.delete('/delete/:id', function(req, res){
   });
 });
 
-router.get('/feed/:id', function(req, res){
+router.get('/feed', function(req, res){
   var maxHealth = 0;
   var currentHealth = 0;
+  var userId = req.query.userId;
+  var adoptionId = req.query.adoptionId;
+  var resourceId = req.query.resourceId;
 
-  getPetMaxHealth(req.params.id).then(function(result){
+  getPetMaxHealth(adoptionId).then(function(result){
     maxHealth = result.Max_Health
   }).then(function(){
-    getPetCurrentHealth(req.params.id).then(function(result){
+    getPetCurrentHealth(adoptionId).then(function(result){
       currentHealth = result.Current_Health;
       if (currentHealth < maxHealth) {
         currentHealth += 1;
-        increasePetHealth(req.params.id, currentHealth).then(function(){
-          res.send(currentHealth);
-        });
+        increasePetHealth(adoptionId, currentHealth).then(function(){
+        }).then(function(){
+          db_User_Resources.useResource(userId, resourceId).then(function(){
+            res.send(currentHealth);
+          });
+        })
       } else {
         res.send('Pet at max health: ' + maxHealth)
       }
