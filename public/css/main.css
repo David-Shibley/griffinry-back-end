@@ -52,6 +52,11 @@ body, html {
   .signup-form input {
     margin: 0.2rem 0; }
 
+.edit_button {
+  height: 40px;
+  width: 40px;
+}
+
 .pet-creator {
   display: flex;
   flex-direction: row;
