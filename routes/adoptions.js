@@ -14,17 +14,16 @@ router.post('/add', function(req, res){
 
 router.get('/list/:id', function(req, res){
   db_Adoptions.updatePetListStatistics(req.params.id).then(function(){
-    db_Adoptions.getPetList(req.params.id).then(function(returnList){
-      res.send(returnList);
-    })
-  })
+    return db_Adoptions.getPetList(req.params.id)
+  }).then(function(returnList) {
+    res.send(returnList);
+  });
 });
 
 //http:localhost:3000/adoptions/updateStats/1
 router.get('/updateStats/:adoptionId', function(req, res){
-  db_Adoptions.updateHealthEnergyGains(
-    req.params.adoptionId
-  ).then(function(result){
+  db_Adoptions.updatePetListStatistics(req.params.adoptionId)
+  .then(function(result){
     res.send(result);
   })
 })
