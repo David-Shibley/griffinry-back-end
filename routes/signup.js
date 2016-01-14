@@ -8,9 +8,37 @@ function Users(){
   return knex('users');
 }
 
-// router.get('/', function(req, res){
-//   res.sendFile('singup.html');
-// });
+function emailValidator(req) {
+  var email = req.email;
+
+  var invalid = [];
+
+  if (email.indexOf("@") < 1 || email.lastIndexOf(".") < email.indexOf("@") + 2 || email.lastIndexOf(".") + 2 >= email.length) {
+    invalid.push("*Email");
+  }
+
+  if (invalid.length != 0) {
+    return false;
+  }
+
+  return true;
+}
+
+function passwordValidator(req) {
+  var password = req.password;
+
+  var invalid = [];
+
+  if (password.length < 8) {
+    invalid.push("*Password");
+  }
+
+  if (invalid.length != 0) {
+    return false;
+  }
+
+  return true;
+}
 
 router.get('/', function(req, res){
   if(req.isAuthenticated()){
@@ -20,6 +48,18 @@ router.get('/', function(req, res){
 });
 
 router.post('/',function(req, res, next){
+  var validEmail = emailValidator(req.body);
+  var validPassword = passwordValidator(req.body);
+  if (!validEmail) {
+    res.render('signup', {
+      error: 'Email must be in proper format "example@email.com"'
+    });
+  }
+  if (!validPassword) {
+    res.render('signup', {
+      error: 'Password must be at least 8 characters'
+    });
+  }
   bcrypt.hash(req.body.password, 10, function(err, hash){
     if(err){
       console.log(err);
