@@ -50,7 +50,7 @@ function renderPetData (pet) {
 	var petName = document.createElement('li');
 	var petEnergy = document.createElement('li');
 
-	petImage.src = 'images/' + pet.Pet_Id.toLowerCase() + '_' + pet.Color.toLowerCase() + '.png';
+	petImage.src = 'images/' + pet.Pet_Id.toLowerCase() + '_' + pet.Color.toLowerCase() + '_tn.png';
 	listItem.id = pet.id;
 	petName.innerHTML = '<span class="pet-name">' + pet.Name + '</span>';
 	petEnergy.innerHTML = '<span class="pet-energy">' + pet.Current_Energy + '/' + pet.Max_Energy + '</span>';
