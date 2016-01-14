@@ -20,11 +20,15 @@ router.get('/:id', function(req, res) {
   .select('users.User_Name', 'users.DOB', 'users.Role', 'users.About_Me', 'users.id', 'adoptions.Name', 'adoptions.Pet_Id', 'adoptions.Color', 'adoptions.id as adoptions_id')
   .innerJoin('adoptions', 'adoptions.User_Id', 'users.id')
   .then(function(adoptions) {
+    if(Array.isArray(req.user)){
+      console.log('req.user is an array');
+      req.user.id = req.user[0].id;
+    }
     if (adoptions.length === 0) {
       Users().where('id', req.params.id).first()
       .then(function(user) {
         if (user) {
-          if (req.user.id === req.params.id || req.user.Role === 'Administrator') {
+          if (req.user.id === Number(req.params.id) || req.user.Role === 'Administrator') {
             res.render('profile', {
               user_data: [user],
               authenticated: true
