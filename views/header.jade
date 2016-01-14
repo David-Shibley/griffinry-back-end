@@ -13,6 +13,9 @@ header
         li
           a(href='/dashboard') Dashboard
         li.profile-link
-          a(href='#') Profile
+          if user
+            a(href='/users/' + user.id) Profile
+          else
+            a(href='/users/' + user[0].id) Profile
         li
           a(href='/auth/logout') Logout
