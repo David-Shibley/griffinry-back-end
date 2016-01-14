@@ -66,9 +66,7 @@ router.get('/count', function(req, res){
   if(Array.isArray(req.user)){
     req.user.id = req.user[0].id;
   }
-  console.log('fuckfuckfuckfuckfuck');
     db_Adoptions.getPetCount(req.user.id).then(function(petNumber){
-    console.log(petNumber);
     res.json(petNumber[0].count);
   });
 });
