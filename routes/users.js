@@ -80,8 +80,7 @@ router.post('/:id', function(req, res){
     Users().where('id', req.params.id).update({
       User_Name: req.body.username,
       DOB: req.body.DOB,
-      About_Me: req.body.about,
-      Password: bcrypt.hashSync(req.body.password, 10)
+      About_Me: req.body.about
     }).then(function(){
       res.redirect('/users/' + req.params.id);
     });
@@ -99,7 +98,8 @@ router.get('/:id/delete', function(req, res) {
       .then(function() {
         Users().where('id', req.params.id).del()
         .then(function() {
-          res.redirect('/login');
+          req.logout();
+          res.redirect('/');
         });
       })
     }).catch(function(err) {
