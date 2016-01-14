@@ -3,16 +3,20 @@ header
   span
     img(src='/images/griffinry_logo.png', alt='Griffinry')
   .user
-    if user
+    if !user || user[0]
+      h2.username 
+        a(href='/signup') Sign up!
+    else if user
       h2.username #{user.User_Name}
-    else
+    else if user[0]
       h2.username #{user[0].User_Name}
+      
     img.hamburger(src='/images/hamburger.png', alt='user menu')
     .user-dropdown
       ul
         li
           a(href='/dashboard') Dashboard
         li.profile-link
-          a(href='#') Profile
+          a(href='') Profile
         li
           a(href='/auth/logout') Logout

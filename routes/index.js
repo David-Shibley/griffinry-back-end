@@ -4,7 +4,7 @@ var path = require('path');
 
 function isAuthenticated(req, res, next){
   if (!req.isAuthenticated()){
-    res.redirect('/')
+    res.redirect('/');
   }else{
     next();
   }
