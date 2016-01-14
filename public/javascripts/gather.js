@@ -53,7 +53,7 @@ function renderPetData (pet) {
 	petImage.src = 'images/' + pet.Pet_Id.toLowerCase() + '_' + pet.Color.toLowerCase() + '_tn.png';
 	listItem.id = pet.id;
 	petName.innerHTML = '<span class="pet-name">' + pet.Name + '</span>';
-	petEnergy.innerHTML = '<span class="pet-energy">' + pet.Current_Energy + '/' + pet.Max_Energy + '</span>';
+	petEnergy.innerHTML = '<span class="pet-energy">' + Math.round(pet.Current_Energy) + '/' + pet.Max_Energy + '</span>';
 
 	listItem.appendChild(petImage);
 	listItem.appendChild(petStats);
@@ -70,10 +70,10 @@ function updatePetEnergy (petId, modifier) {
 	var energy = $(energyElement).text().split('/');
 	if (modifier) {
 		energy[0] = parseInt(energy[0]) - modifier;
-		energy = energy[0] + '/' + energy[1];
+		energy = Math.round(energy[0]) + '/' + energy[1];
 		$(energyElement).text(energy);
 	}
-	if (energy[0] === '0') {
+	if (parseInt(energy[0]) <= 0) {
 		setInactive(petId);
 		$(energyElement).addClass('empty');
 	}
