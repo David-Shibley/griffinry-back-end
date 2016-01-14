@@ -155,5 +155,9 @@ module.exports = {
 
       });
     })
+  },
+
+  getPetCount: function(id){
+    return Adoptions().count().where('User_Id', id);
   }
 }

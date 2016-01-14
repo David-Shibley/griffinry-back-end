@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+var ensurePets = require('../bin/ensurePets');
 
 function isAuthenticated(req, res, next){
   if (!req.isAuthenticated()){
@@ -19,14 +20,20 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/create.html', isAuthenticated ,  function(req, res, next) {
+  console.log('req.user.id', req.user.id);
+  console.log('reg.user', req.user);
   res.sendFile('/create.html', { root: path.join(__dirname, '../html') });
 });
 
-router.get('/gather.html', isAuthenticated, function(req, res, next) {
+// <<<<<<< HEAD
+// router.get('/gather.html', isAuthenticated, ensurePets, function(req, res, next) {
+// =======
+router.get('/gather.html',  isAuthenticated, ensurePets, function(req, res, next) {
+// >>>>>>> pull
   res.sendFile('/gather.html', { root: path.join(__dirname, '../html') });
 });
 
-router.get('/pets.html', isAuthenticated, function(req, res, next) {
+router.get('/pets.html',  isAuthenticated, ensurePets, function(req, res, next) {
   res.sendFile('/pets.html', { root: path.join(__dirname, '../html') });
 });
 

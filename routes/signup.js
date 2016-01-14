@@ -31,12 +31,14 @@ router.post('/',function(req, res, next){
       Role: 'User',
       DOB: req.body.dob
     }, 'id').then(function(id){
-      console.log(id);
+      console.log('id',id);
       Users().where('id', id[0]).then(function(user){
         req.login(user, function(err){
          if(!err){
+           console.log(user);
            res.redirect('/create.html');
          }else{
+           console.log(err);
            res.redirect('/signup?error=' + err);
          }
       });

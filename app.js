@@ -8,6 +8,7 @@ var passport = require('passport');
 var session = require('express-session');
 var knex = require('./db/knex');
 var bcrypt = require('bcrypt');
+var ensurePets = require('./bin/ensurepets');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -110,7 +111,7 @@ app.use('/users', users);
 app.use('/resources', resources);
 app.use('/adoptions', adoptions);
 app.use('/pets', pets);
-app.use('/dashboard', isAuthenticated, dashboard);
+app.use('/dashboard', isAuthenticated, ensurePets, dashboard);
 app.use('/userId', userId);
 
 // catch 404 and forward to error handler
