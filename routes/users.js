@@ -25,7 +25,6 @@ router.get('/:id', function(req, res) {
       .then(function(user) {
         if (user) {
           if (req.user.id === req.params.id || req.user.Role === 'Administrator') {
-            console.log('true');
             res.render('profile', {
               user_data: [user],
               authenticated: true
@@ -38,11 +37,18 @@ router.get('/:id', function(req, res) {
         }
       });
     } else {
-      if (req.user.id === Number(req.params.id) || req.user.Role === 'Administrator') {
-        res.render('profile', {
-          user_data: adoptions,
-          authenticated: true
-        });
+      if (req.user) {
+        if (req.user.id === Number(req.params.id) || req.user.Role === 'Administrator') {
+          res.render('profile', {
+            user_data: adoptions,
+            authenticated: true
+          });
+        } else {
+          res.render('profile', {
+            user_data: adoptions,
+            authenticated: false
+          });
+        }
       } else {
         res.render('profile', {
           user_data: adoptions,
