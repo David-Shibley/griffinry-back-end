@@ -151,6 +151,16 @@ body, html {
 .pet-display {
 	display: flex;
 	flex-direction: row;
+	&>div {
+		margin-left: 1rem;
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+.resource-list {
+	display: flex;
+	flex-direction: row;
 }
 
 //general use
