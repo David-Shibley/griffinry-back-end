@@ -1,6 +1,8 @@
 $(document).ready(function () {
 	var selectedPet;
 
+	$('.feed-button').click(feedPet);
+
 	getUser().then(function (user) {
 		renderUserData(user);
 		// get and render user's pets
@@ -25,15 +27,20 @@ $(document).ready(function () {
 					}
 				}
 			});
+
 		});
 		//get and render user's resources
 		var resourcesApi = '/resources/list/' + user.id;
 		$.get(resourcesApi, function (data) {
 			for (var i in data) {
 				renderResourceList(data[i]);
-			} 
-		});
+			}
 
+			//item selection listener
+			$('.resource-list').click(function (event) {
+				selectResource(event.target.id);
+			});
+		});
 	});
 
 	$('.hamburger').click(function () {
@@ -77,7 +84,7 @@ function renderResourceList (resource) {
 	var $resourceList = $('.resource-list');
 
 	var newResource = document.createElement('li');
-	newResource.innerHTML = '<span class="item-quantity">' + resource.Quantity + '</span> <img src="images/icon.png" alt="' + resource.Name + '"> <span class="resource-name">' + resource.Name + '</span>';
+	newResource.innerHTML = '<span class="item-quantity">' + resource.Quantity + '</span> <img id="' + resource.Name + '" src="images/icon.png" alt="' + resource.Rarity + '" class="' + resource.Rarity + '"> <span class="resource-name">' + resource.Name + '</span>';
 
 	$resourceList.append(newResource);
 }
@@ -98,11 +105,23 @@ function renderActivePet (pet) {
 }
 
 function selectPet (pet) {
-	petSelector = '#' + pet.id;
+	var petSelector = '#' + pet.id;
 	$('li').removeClass('active');
 	$(petSelector).addClass('active');
 }
 
 function selectResource (resource) {
+	var resourceSelector = '#' + resource;
+	if ($(resourceSelector).hasClass('selected')) {
+		$('img').removeClass('selected');
+		$('.feed-button').css('display', 'none');
+	} else {
+		$('img').removeClass('selected');
+		$(resourceSelector).addClass('selected');	
+		$('.feed-button').css('display', 'block');
+	}
+}
 
+function feedPet () {
+	
 }

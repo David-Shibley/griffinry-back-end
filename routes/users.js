@@ -17,22 +17,44 @@ function Adoptions() {
 
 router.get('/:id', function(req, res) {
   Users().where('users.id', req.params.id)
-  .select('users.User_Name', 'users.DOB', 'users.About_Me', 'users.id', 'adoptions.Name', 'adoptions.Pet_Id', 'adoptions.Color', 'adoptions.id as adoptions_id')
+  .select('users.User_Name', 'users.DOB', 'users.Role', 'users.About_Me', 'users.id', 'adoptions.Name', 'adoptions.Pet_Id', 'adoptions.Color', 'adoptions.id as adoptions_id')
   .innerJoin('adoptions', 'adoptions.User_Id', 'users.id')
   .then(function(adoptions) {
-    if(adoptions.length === 0){
-      Users().where('id', req.params.id).first().then(function(user){
-        if(user){
-          res.render('profile', {user_data: [user]});
-        }else{
-          res.render('profile', {error: 'User not found'});
+    if (adoptions.length === 0) {
+      Users().where('id', req.params.id).first()
+      .then(function(user) {
+        if (user) {
+          if (req.user.id === req.params.id || req.user.Role === 'Administrator') {
+            res.render('profile', {
+              user_data: [user],
+              authenticated: true
+            });
+          }
+        } else {
+          res.render('profile', {
+            error: 'User not found'
+          });
         }
       });
-    }else{
-      console.log('adoptions', adoptions);
-      res.render('profile', {
-        user_data: adoptions
-      });
+    } else {
+      if (req.user) {
+        if (req.user.id === Number(req.params.id) || req.user.Role === 'Administrator') {
+          res.render('profile', {
+            user_data: adoptions,
+            authenticated: true
+          });
+        } else {
+          res.render('profile', {
+            user_data: adoptions,
+            authenticated: false
+          });
+        }
+      } else {
+        res.render('profile', {
+          user_data: adoptions,
+          authenticated: false
+        });
+      }
     }
   });
 });
