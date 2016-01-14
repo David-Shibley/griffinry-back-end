@@ -74,5 +74,8 @@ module.exports = {
       Set_Experience(adoptionId, experience).then(function(){
       })
     })
+  },
+  getPetCount: function(id){
+    return Adoptions().count().where('User_Id', id);
   }
 }
