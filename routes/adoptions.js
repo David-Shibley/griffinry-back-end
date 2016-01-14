@@ -14,9 +14,25 @@ router.post('/add', function(req, res){
 
 router.get('/list/:id', function(req, res){
   db_Adoptions.getPetList(req.params.id).then(function(list){
-    res.send(list);
+    // for (var i = 0; i < list.length; i++) {
+    //   db_Adoptions.updateHealthEnergyGains(list[i].id)
+    //   .then(function(){})
+    // }
+
+    db_Adoptions.getPetList(req.params.id).then(function(returnList){
+      res.send(returnList);
+    })
   })
 });
+
+//http://localhost:3000/adoptions/updateStats/1
+router.get('/updateStats/:adoptionId', function(req, res){
+  db_Adoptions.updateHealthEnergyGains(
+    req.params.adoptionId
+  ).then(function(result){
+    res.send(result);
+  })
+})
 
 router.delete('/delete/:id', function(req, res){
   db_Adoptions.deleteAdoption(req.params.id).then(function(result){
@@ -45,7 +61,7 @@ router.get('/feed', function(req, res){
           });
         })
       } else {
-        res.send('Pet at max health: ' + maxHealth)
+        res.send(currentHealth)
       }
     })
   })
