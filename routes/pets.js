@@ -15,21 +15,23 @@ router.get('/list', function(req, res){
   var returnObject = {};
 
   Pets().select().then(function(speciesList){
-    var speciesArray = []
+    var speciesArray = [];
     for (var i = 0; i < speciesList.length; i++) {
-      speciesArray.push(speciesList[i].Type)
+      speciesArray.push(speciesList[i].Type);
     }
     returnObject.species = speciesArray;
   }).then(function(){
     Colors().select().then(function(colorList){
-      var colorArray = []
+      var colorArray = [];
       for (var i = 0; i < colorList.length; i++) {
-        colorArray.push(colorList[i].Color)
+        colorArray.push(colorList[i].Color);
       }
       returnObject.colors = colorArray;
-      res.send(returnObject)
-    })
-  })
-})
+      res.send(returnObject);
+    });
+  });
+});
+
+
 
 module.exports = router;
