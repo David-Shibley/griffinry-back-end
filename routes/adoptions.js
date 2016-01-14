@@ -18,6 +18,13 @@ router.get('/list/:id', function(req, res){
   })
 });
 
+//http://localhost:3000/adoptions/updateStats/1
+router.get('/updateStats/:adoptionId', function(req, res){
+  db_Adoptions.updateHealthEnergyGains(req.params.adoptionId).then(function(result){
+    res.send(result);
+  })
+})
+
 router.delete('/delete/:id', function(req, res){
   db_Adoptions.deleteAdoption(req.params.id).then(function(result){
     res.sendStatus(result);
