@@ -1,7 +1,6 @@
 $(document).ready(function () {
 	var selectedPet;
-
-	$('.feed-button').click(feedPet);
+	var selectedResource;
 
 	getUser().then(function (user) {
 		renderUserData(user);
@@ -28,6 +27,13 @@ $(document).ready(function () {
 				}
 			});
 
+			$('.feed-button').click(function() {
+				if (!$('.feed-button').hasClass('disabled')) {
+					selectedPet.Current_Health = Math.round(feedPet(selectedPet, selectedResource, user.id));
+					renderActivePet(selectedPet);
+				}
+			});
+
 		});
 		//get and render user's resources
 		var resourcesApi = '/resources/list/' + user.id;
@@ -35,10 +41,11 @@ $(document).ready(function () {
 			for (var i in data) {
 				renderResourceList(data[i]);
 			}
-
+			
 			//item selection listener
 			$('.resource-list').click(function (event) {
-				selectResource(event.target.id);
+				selectedResource = event.target.id;
+				selectResource(selectedResource);
 			});
 		});
 	});
@@ -80,11 +87,10 @@ function renderPetList (pet) {
 }
 
 function renderResourceList (resource) {
-	console.log(resource);
 	var $resourceList = $('.resource-list');
 
 	var newResource = document.createElement('li');
-	newResource.innerHTML = '<span class="item-quantity">' + resource.Quantity + '</span> <img id="' + resource.Name + '" src="images/icon.png" alt="' + resource.Rarity + '" class="' + resource.Rarity + '"> <span class="resource-name">' + resource.Name + '</span>';
+	newResource.innerHTML = '<span class="item-quantity">' + resource.Quantity + '</span> <img id="' + resource.Resource_Id + '" src="images/icon.png" alt="' + resource.Rarity + '" class="' + resource.Rarity + '"> <span class="resource-name">' + resource.Name + '</span>';
 
 	$resourceList.append(newResource);
 }
@@ -97,10 +103,10 @@ function renderActivePet (pet) {
 	$('#current-species').text(pet.Color + ' ' + pet.Pet_Id);
 
 	$('#current-health').css('width', healthPercent);
-	$('#current-health').text(pet.Current_Health + '/' + pet.Max_Health);
+	$('#current-health').text(Math.round(pet.Current_Health) + '/' + Math.round(pet.Max_Health));
 
 	$('#current-energy').css('width', energyPercent);
-	$('#current-energy').text(pet.Current_Energy + '/' + pet.Max_Energy);
+	$('#current-energy').text(Math.round(pet.Current_Energy) + '/' + Math.round(pet.Max_Energy));
 	$('#current-pet')[0].src = 'images/' + pet.Pet_Id.toLowerCase() + '_' + pet.Color.toLowerCase() + '.png';
 }
 
@@ -108,6 +114,11 @@ function selectPet (pet) {
 	var petSelector = '#' + pet.id;
 	$('li').removeClass('active');
 	$(petSelector).addClass('active');
+	if (Math.round(pet.Current_Health) === Math.round(pet.Max_Health)) {
+		$('.feed-button').addClass('disabled');
+	} else {
+		$('.feed-button').removeClass('disabled');
+	}
 }
 
 function selectResource (resource) {
@@ -122,6 +133,23 @@ function selectResource (resource) {
 	}
 }
 
-function feedPet () {
-	
+function feedPet (pet, resourceId, userId) {
+	if (pet && resourceId && pet.Current_Health === pet.MaxHealth) {
+		var queryString = 'adoptions/feed/?userId=' + userId + '&adoptionId=' + pet.id + '&resourceId=' + resourceId;
+		$.ajax({
+			method: 'get',
+			url: queryString
+		}).done(function (results) {
+			var listItemSelector = $('.selected')[0].parentElement;	
+			var quantitySelector = $(listItemSelector).children()[0];
+			var itemQuantity = parseInt($(quantitySelector).text()) - 1;
+			$(quantitySelector).text(itemQuantity);
+			if (itemQuantity === 0) {
+				listItemSelector.remove();
+				$('.feed-button').css('display', 'none');
+			}
+			return results;
+		});
+	}
+	return pet.Current_Health;
 }
