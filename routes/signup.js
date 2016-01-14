@@ -22,6 +22,7 @@ router.get('/', function(req, res){
 router.post('/',function(req, res, next){
   bcrypt.hash(req.body.password, 10, function(err, hash){
     if(err){
+      console.log(err);
       return next(err);
     }
     Users().insert({
@@ -45,7 +46,18 @@ router.post('/',function(req, res, next){
       });
       // res.redirect('/login');
     }).catch(function(err){
-      res.render('signup', {error: err});
+      var errorType = err.constraint;
+      if (errorType == 'users_user_name_unique') {
+        res.render('signup', {
+          error: 'That user name is already taken!'
+        });
+      } else if (errorType == 'users_email_unique') {
+        res.render('signup', {
+          error: 'That email is already taken!'
+        });
+      } else {
+        res.render('signup', {error: err});
+      }
     });
   });
 
