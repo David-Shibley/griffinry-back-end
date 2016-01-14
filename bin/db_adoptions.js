@@ -62,14 +62,16 @@ function Set_Current_Health(adoptionId, amount){
 function Update_Stats_For_Adoption(adoptionId){
   var healthUpdateRateSec = 1 / 10800; // one every 3 hours
   var energyUpdateRateSec = 1 / 3600; // one every hour
+  var secondsSinceLastUpdate = 0;
 
   var dateNow = new Date();
   return Get_Last_Updated(adoptionId).then(function(result){
-    var secondsSinceLastUpdate = Math.abs(dateNow - result.Last_Updated);
+    secondsSinceLastUpdate = Math.abs(dateNow - result.Last_Updated);
     secondsSinceLastUpdate = Math.round(secondsSinceLastUpdate / 1000);
+  }).then(function(){
 
     // update health
-    Get_Current_Health(adoptionId).then(function(result){
+    return Get_Current_Health(adoptionId).then(function(result){
       var currentHealth = result.Current_Health;
       var newHealth = currentHealth - (secondsSinceLastUpdate * healthUpdateRateSec);
       if (newHealth < 0) {
@@ -78,11 +80,13 @@ function Update_Stats_For_Adoption(adoptionId){
       Set_Current_Health(adoptionId, newHealth).then(function(){});
     })
 
+  }).then(function(){
+
     // update energy
     var maxEnergy = 0;
-    Get_Max_Energy(adoptionId).then(function(result){
+    return Get_Max_Energy(adoptionId).then(function(result){
       maxEnergy = result.Max_Energy;
-    });
+    })
 
     Get_Current_Energy(adoptionId).then(function(result){
       var currentEnergy = Number(result.Current_Energy);
@@ -92,13 +96,17 @@ function Update_Stats_For_Adoption(adoptionId){
         newEnergy = maxEnergy;
       }
 
-      Set_Current_Energy(adoptionId, newEnergy).then(function(){});
+      return Set_Current_Energy(adoptionId, newEnergy).then(function(){});
     })
 
+  }).then(function(){
+
     // update last updated field
-    Set_Last_Updated(adoptionId).then(function(){
+    return Set_Last_Updated(adoptionId).then(function(){
     });
+
   })
+
 };
 
 function Get_Pet_List(userId){
@@ -162,9 +170,10 @@ module.exports = {
 
   updatePetListStatistics: function(userId){
     return Get_Pet_List(userId).then(function(list){
-      for (var i = 0; i < list.length; i++) {
-        Update_Stats_For_Adoption(list[i].id).then(function(){})
-      }
+      var promises = list.map(function(item) {
+        return Update_Stats_For_Adoption(item.id);
+      });
+      return Promise.all(promises);
     })
   },
 
