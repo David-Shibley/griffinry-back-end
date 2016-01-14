@@ -120,10 +120,9 @@ body, html {
 		}
 	}
 	img {
+		border: 2px solid #5c323e;
 		margin: 0.5rem;
 		border-radius: 50%;
-		width:6rem;
-		height:6rem;
 		cursor: pointer;
 	}
 }
@@ -170,6 +169,12 @@ header {
 	span {
 		flex-grow: 1;
 	}
+}
+
+label {
+	font-size: 1rem;
+	font-weight: normal;
+	text-align: left;
 }
 
 main {
