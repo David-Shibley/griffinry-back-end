@@ -16,10 +16,20 @@ router.get('/:id', function(req, res) {
   .select('users.User_Name', 'users.DOB', 'users.About_Me', 'users.id', 'adoptions.Name', 'adoptions.Pet_Id', 'adoptions.Color', 'adoptions.id as adoptions_id')
   .innerJoin('adoptions', 'adoptions.User_Id', 'users.id')
   .then(function(adoptions) {
+    if(adoptions.length === 0){
+      Users().where('id', req.params.id).first().then(function(user){
+        if(user){
+          res.render('profile', {user_data: [user]});
+        }else{
+          res.render('profile', {error: 'User not found'});
+        }
+      });
+    }else{
       console.log('adoptions', adoptions);
       res.render('profile', {
         user_data: adoptions
       });
+    }
   });
 });
 
