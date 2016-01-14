@@ -65,6 +65,10 @@ router.get('/:id', function(req, res) {
 
 router.get('/:id/edit', function(req, res) {
   console.log('user ', req.user);
+  if(Array.isArray(req.user)){
+    req.user.id = req.user[0].id;
+    req.user = req.user[0];
+  }
   if (req.user && req.params.id == req.user.id) {
     res.render('edit', {
       user: req.user
@@ -75,13 +79,15 @@ router.get('/:id/edit', function(req, res) {
 });
 
 router.post('/:id', function(req, res){
+  if(Array.isArray(req.user)){
+    req.user.id = req.user[0].id;
+  }
   if (req.user || req.params.id === req.user.id) {
     console.log("pw ", req.body);
     Users().where('id', req.params.id).update({
       User_Name: req.body.username,
       DOB: req.body.DOB,
-      About_Me: req.body.about,
-      Password: bcrypt.hashSync(req.body.password, 10)
+      About_Me: req.body.about
     }).then(function(){
       res.redirect('/users/' + req.params.id);
     });
@@ -92,6 +98,9 @@ router.post('/:id', function(req, res){
 
 
 router.get('/:id/delete', function(req, res) {
+  if(Array.isArray(req.user)){
+    req.user.id = req.user[0].id;
+  }
   if (req.params.id == req.user.id || req.user.Role == 'Administrator') {
     Adoptions().where('User_Id', req.params.id).del()
     .then(function() {
@@ -99,9 +108,14 @@ router.get('/:id/delete', function(req, res) {
       .then(function() {
         Users().where('id', req.params.id).del()
         .then(function() {
-          res.redirect('/login');
+          if(req.user.Role != 'Administrator'){
+            req.logout();
+            res.redirect('/');
+          }else{
+            res.redirect('/dashboard');
+          }
         });
-      })
+      });
     }).catch(function(err) {
       console.error(err);
     });
