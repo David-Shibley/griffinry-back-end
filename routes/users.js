@@ -108,10 +108,14 @@ router.get('/:id/delete', function(req, res) {
       .then(function() {
         Users().where('id', req.params.id).del()
         .then(function() {
-          req.logout();
-          res.redirect('/');
+          if(req.user.Role != 'Administrator'){
+            req.logout();
+            res.redirect('/');
+          }else{
+            res.redirect('/dashboard');
+          }
         });
-      })
+      });
     }).catch(function(err) {
       console.error(err);
     });
