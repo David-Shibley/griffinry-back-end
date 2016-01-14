@@ -24,10 +24,18 @@ function Get_Last_Updated(adoptionId){
          .first()
 };
 
-function Set_Last_Updated(adoptionId){
+function Get_Max_Energy(adoptionId){
   return Adoptions()
          .where('id', adoptionId)
-         .update('Last_Updated', amount)
+         .select('Max_Energy')
+         .first()
+};
+
+function Set_Last_Updated(adoptionId){
+  var currentDateTime = new Date();
+  return Adoptions()
+         .where('id', adoptionId)
+         .update('Last_Updated', currentDateTime)
 };
 
 function Get_Current_Energy(adoptionId){
@@ -43,6 +51,14 @@ function Set_Current_Energy(adoptionId, energy){
          .update({'Current_Energy': energy})
 };
 
+function Get_Current_Health(adoptionId){
+  return Adoptions().where('id', adoptionId).select('Current_Health').first()
+};
+
+function Set_Current_Health(adoptionId, amount){
+  return Adoptions().where('id', adoptionId).update('Current_Health', amount)
+};
+
 
 module.exports = {
   getPetMaxHealth: function(adoptionId){
@@ -50,11 +66,11 @@ module.exports = {
   },
 
   getPetCurrentHealth: function(adoptionId){
-    return Adoptions().where('id', adoptionId).select('Current_Health').first()
+    return Get_Current_Health(adoptionId)
   },
 
-  increasePetHealth: function(adoptionId, amount){
-    return Adoptions().where('id', adoptionId).update('Current_Health', amount)
+  setPetCurrentHealth: function(adoptionId, amount){
+    return Set_Current_Health(adoptionId, amount)
   },
 
   newAdoption: function(userId, petId, color, name){
@@ -99,15 +115,45 @@ module.exports = {
   },
 
   updateHealthEnergyGains: function(adoptionId){
-    var dateNow = new Date();
-    dateNow.setMinutes(0,0,0);
-    return Get_Last_Updated(adoptionId).then(function(result){
-      var hoursSinceLastUpdate = Math.abs(dateNow - result.Last_Updated);
-      hoursSinceLastUpdate = Math.round(hoursSinceLastUpdate / 3600000);
+    var healthUpdateRateSec = 1 / 10800; // one every 3 hours
+    var energyUpdateRateSec = 1 / 3600; // one every hour
 
-      if (hoursSinceLastUpdate >= 1) {
-        console.log(hoursSinceLastUpdate);
-      }
+    var dateNow = new Date();
+    return Get_Last_Updated(adoptionId).then(function(result){
+      var secondsSinceLastUpdate = Math.abs(dateNow - result.Last_Updated);
+      secondsSinceLastUpdate = Math.round(secondsSinceLastUpdate / 1000);
+
+      // update health
+      Get_Current_Health(adoptionId).then(function(result){
+        var currentHealth = result.Current_Health;
+        var newHealth = currentHealth - (secondsSinceLastUpdate * healthUpdateRateSec);
+        if (newHealth < 0) {
+          newHealth = 0;
+        }
+        Set_Current_Health(adoptionId, newHealth).then(function(){});
+      })
+
+      // update energy
+      var maxEnergy = 0;
+      Get_Max_Energy(adoptionId).then(function(result){
+        maxEnergy = result.Max_Energy;
+      });
+
+      Get_Current_Energy(adoptionId).then(function(result){
+        var currentEnergy = Number(result.Current_Energy);
+        var newEnergy = currentEnergy + (secondsSinceLastUpdate * energyUpdateRateSec);
+
+        if (newEnergy > maxEnergy) {
+          newEnergy = maxEnergy;
+        }
+
+        Set_Current_Energy(adoptionId, newEnergy).then(function(){});
+      })
+
+      // update last updated field
+      Set_Last_Updated(adoptionId).then(function(){
+
+      });
     })
   }
 }
