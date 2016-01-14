@@ -10,7 +10,7 @@ function getRandomRarity(){
 
   if (randomNumber <= 85) {
     return "Common";
-  } else if (randomNumber > 85 && randomNumber < 99) {
+  } else if (randomNumber > 85 && randomNumber < 100) {
     return "Rare";
   } else {
     return "Epic";
