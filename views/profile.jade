@@ -1,19 +1,22 @@
-extends layout
-
-block content
-  main(class='col')
-    div.user-data.row
-      h1.visible Welcome to #{user_data[0].User_Name}'s Griffinry!
-      a(class='button', href='/users/#{user_data[0].id}/edit') 
-        p Edit
-      a(class='button', href='/users/#{user_data[0].id}/delete')
-        p Delete
-    p(class='row') Age: #{moment(user_data[0].DOB).fromNow(true)} old
-    p(class='row') About Me: #{user_data[0].About_Me} old
-    h2(class='row') My Pets
-    ul(class='row')
-    each pet in user_data
-      li.col-3
-      img(src='/images/#{pet.Pet_Id.toLowerCase()}_#{pet.Color.toLowerCase()}.png')
-      span #{pet.Name}
-      span #{pet.Pet_Id}
+  if !error
+    main(class='col')
+      div.user-data.row
+        h1.visible Welcome to #{user_data[0].User_Name}'s Griffinry!
+        a(class='button', href='/users/#{user_data[0].id}/edit') 
+          p Edit
+          img(class='edit_button' src='/images/update.jpg') 
+        a(class='button', href='/users/#{user_data[0].id}/delete')
+          p Delete
+          img(class='edit_button' src='/images/delete.jpg') 
+      p(class='row') Age: #{moment(user_data[0].DOB).fromNow(true)} old
+      p(class='row') About Me: #{user_data[0].About_Me} old
+      if user_data[0].Name
+        h2(class='row') My Pets
+        ul(class='row')
+          each pet in user_data
+            li.col-3
+            img(src='/images/#{pet.Pet_Id.toLowerCase()}_#{pet.Color.toLowerCase()}.png')
+            span #{pet.Name}
+            span #{pet.Pet_Id}
+  else
+    h1=error
