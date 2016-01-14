@@ -3,7 +3,7 @@ extends layout
 block content
   if !error
     main
-      div.user-data.row
+      div.user-data
         h1.visible Welcome to #{user_data[0].User_Name}'s Griffinry!
         if authenticated
           a(href='/users/#{user_data[0].id}/edit') 
@@ -16,9 +16,9 @@ block content
         h2 Pets
         ul
           each pet in user_data
-            li.col-3
-            img(src='/images/#{pet.Pet_Id.toLowerCase()}_#{pet.Color.toLowerCase()}.png')
-            span #{pet.Name}
-            span #{pet.Pet_Id}
+            li
+            img(src='/images/#{pet.Pet_Id.toLowerCase()}_#{pet.Color.toLowerCase()}_tn.png')
+            p #{pet.Name}
+            p #{pet.Pet_Id}
   else
     h1.visible=error
