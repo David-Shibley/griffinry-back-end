@@ -51,4 +51,10 @@ router.get('/feed', function(req, res){
   })
 });
 
+router.get('/count', function(req, res){
+  Adoptions().count().where('id', req.user.id).then(function(petNumber){
+    res.json(petNumber[0].count);
+  });
+});
+
 module.exports = router;

@@ -23,11 +23,11 @@ router.get('/create.html', isAuthenticated ,  function(req, res, next) {
   res.sendFile('/create.html', { root: path.join(__dirname, '../html') });
 });
 
-router.get('/gather.html', ensurePets, isAuthenticated, function(req, res, next) {
+router.get('/gather.html', isAuthenticated, ensurePets, function(req, res, next) {
   res.sendFile('/gather.html', { root: path.join(__dirname, '../html') });
 });
 
-router.get('/pets.html', ensurePets, isAuthenticated, function(req, res, next) {
+router.get('/pets.html',  isAuthenticated, ensurePets, function(req, res, next) {
   res.sendFile('/pets.html', { root: path.join(__dirname, '../html') });
 });
 
