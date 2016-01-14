@@ -7,6 +7,10 @@ function Users() {
   return knex('users');
 }
 
+function Resources() {
+  return knex('user_resources');
+}
+
 function Adoptions() {
   return knex('adoptions');
 }
@@ -55,10 +59,13 @@ router.get('/:id/delete', function(req, res) {
   if (req.params.id == req.user.id || req.user.Role == 'Administrator') {
     Adoptions().where('User_Id', req.params.id).del()
     .then(function() {
-      Users().where('id', req.params.id).del()
+      Resources().where('User_Id', req.params.id).del()
       .then(function() {
-        res.redirect('/login');
-      });
+        Users().where('id', req.params.id).del()
+        .then(function() {
+          res.redirect('/login');
+        });
+      })
     }).catch(function(err) {
       console.error(err);
     });
