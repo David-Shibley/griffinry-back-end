@@ -43,20 +43,46 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(user, done) {
   done(null, user);
 });
-
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.HOST + "/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    process.nextTick(function(){
-      console.log(profile.emails[0].value);
-      console.log(profile);
-      return done(null, profile);
-    });
+    // process.nextTick(function(){
+      // console.log(profile.emails[0].value);
+      // console.log(profile);
+      console.log('got here');
+      console.log('profile', profile);
+      console.log('profile.emails', profile.emails);
+      knex('users').select().where('Email', profile.emails[0].value).first().then(function(user){
+        if(user){
+          console.log('hi', user);
+          return done(null, user);
+        }else{
+          console.log('profile again', profile);
+          return done(null, profile);
+        }
+      }).catch(function(error){
+        console.log(error);
+        return done(null, profile);
+      });
+    // });
   }
 ));
+// passport.use(new GoogleStrategy({
+//     clientID: process.env.GOOGLE_CLIENT_ID,
+//     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//     callbackURL: process.env.HOST + "/auth/google/callback"
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//     process.nextTick(function(){
+//       console.log(profile.emails[0].value);
+//       console.log(profile);
+//       return done(null, profile);
+//     });
+//   }
+// ));
 
 passport.use(new LocalStrategy(
   function(username, password, done){
