@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var ensurePets = require('../bin/ensurePets');
+var ensurePets = require('../bin/ensurepets');
 var threePetRedirect = require('../bin/3petredirect');
 
 function isAuthenticated(req, res, next){
