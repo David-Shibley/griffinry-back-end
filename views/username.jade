@@ -8,8 +8,10 @@ block content
       form.signup-form(action='/signup', method='POST')
         label(for='username') Username:
         input(type='text', name='username')
+        label(for='about') About me:
+        input(type='text', name='about')
         input(type='hidden', name='email' value=email)
         input(type='hidden', name='password' value="null")
-        label(for='dob') Date of Birth
+        label(for='dob') Date of Birth:
         input(type='date', name='dob')
         input(type='submit', value='Sign up')

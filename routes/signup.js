@@ -91,6 +91,7 @@ router.post('/',function(req, res, next){
     Users().insert({
       User_Name: req.body.username,
       Email: req.body.email,
+      About_Me: req.body.about,
       Password: hash,
       Role: 'User',
       DOB: req.body.dob
