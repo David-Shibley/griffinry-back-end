@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var db_User_Resources = require('../bin/db_user_resources');
+var db_Resources = require('../bin/db_resources');
 var db_Adoptions = require('../bin/db_adoptions');
 
 router.post('/add', function(req, res){
@@ -47,12 +48,16 @@ router.get('/feed', function(req, res){
     db_Adoptions.getPetCurrentHealth(adoptionId).then(function(result){
       currentHealth = Number(result.Current_Health);
       if (currentHealth < maxHealth) {
-        currentHealth += 1;
-        db_Adoptions.increasePetHealth(adoptionId, currentHealth).then(function(){
-        }).then(function(){
-          db_User_Resources.useResource(userId, resourceId).then(function(){
-            res.send(currentHealth);
-          });
+        db_Resources.getResourceValue(resourceId).then(function(foodValue){
+          currentHealth += Number(foodValue[0].Value);
+          if (currentHealth > maxHealth) {
+            currentHealth = maxHealth;
+          }
+          db_Adoptions.increasePetHealth(adoptionId, currentHealth).then(function(){
+            db_User_Resources.useResource(userId, resourceId).then(function(){
+              res.send(currentHealth);
+            });
+          })
         })
       } else {
         res.send(currentHealth)
