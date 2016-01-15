@@ -3,6 +3,8 @@ extends layout
 block content
   main
     section(class="dash")
+      if message  
+        h2=message
       figure
         a(href="/pets.html")
           img(src="images/pets_link.png" alt="Griffinry pets")
