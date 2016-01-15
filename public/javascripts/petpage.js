@@ -18,10 +18,11 @@ $(document).ready(function () {
 			//pet selection listener
 			$('.pet-list').click(function (event) {
 				for (var i in data) {
-					if (event.target.parentNode.id == data[i].id) {
+					var petId = event.target.parentNode.id.substr(0, event.target.parentNode.id.length - 3);
+					if (petId == data[i].id) {
 						selectedPet = data[i];
 						selectPet(selectedPet);
-						renderActivePet(selectedPet);					
+						renderActivePet(selectedPet);
 						break;
 					}
 				}
@@ -30,6 +31,7 @@ $(document).ready(function () {
 			$('.feed-button').click(function() {
 				if (!$('.feed-button').hasClass('disabled')) {
 					selectedPet.Current_Health = Math.round(feedPet(selectedPet, selectedResource, user.id));
+					console.log(selectedPet.Current_Health);
 					renderActivePet(selectedPet);
 				}
 			});
@@ -41,7 +43,7 @@ $(document).ready(function () {
 			for (var i in data) {
 				renderResourceList(data[i]);
 			}
-			
+
 			//item selection listener
 			$('.resource-list').click(function (event) {
 				selectedResource = event.target.id;
@@ -77,7 +79,7 @@ function renderPetList (pet) {
 	var petName = document.createElement('p');
 
 	petImage.src = 'images/' + pet.Pet_Id.toLowerCase() + '_' + pet.Color.toLowerCase() + '_tn.png';
-	listItem.id = pet.id;
+	listItem.id = pet.id + 'pet';
 	petName.innerText = pet.Name;
 
 	listItem.appendChild(petImage);
@@ -90,14 +92,14 @@ function renderResourceList (resource) {
 	var $resourceList = $('.resource-list');
 
 	var newResource = document.createElement('li');
-	newResource.innerHTML = '<span class="item-quantity">' + resource.Quantity + '</span> <img id="' + resource.Resource_Id + '" src="images/icon.png" alt="' + resource.Rarity + '" class="' + resource.Rarity + '"> <span class="resource-name">' + resource.Name + '</span>';
+	newResource.innerHTML = '<span class="item-quantity">' + resource.Quantity + '</span> <img id="' + resource.Resource_Id + '" src="images/' + resource.Name.toLowerCase() + '.png" alt="' + resource.Rarity + '" class="' + resource.Rarity + '"> <span class="resource-name">' + resource.Name + '</span>';
 
 	$resourceList.append(newResource);
 }
 
 function renderActivePet (pet) {
-	var healthPercent = Math.round(pet.Current_Health * pet.Max_Health / 100) + '%'; 
-	var energyPercent = Math.round(pet.Current_Energy * pet.Max_Energy / 100) + '%'; 
+	var healthPercent = Math.round(pet.Current_Health / pet.Max_Health * 100) + '%';
+	var energyPercent = Math.round(pet.Current_Energy / pet.Max_Energy * 100) + '%';
 
 	$('#current-name').text(pet.Name);
 	$('#current-species').text(pet.Color + ' ' + pet.Pet_Id);
@@ -111,7 +113,7 @@ function renderActivePet (pet) {
 }
 
 function selectPet (pet) {
-	var petSelector = '#' + pet.id;
+	var petSelector = '#' + pet.id + 'pet';
 	$('li').removeClass('active');
 	$(petSelector).addClass('active');
 	if (Math.round(pet.Current_Health) === Math.round(pet.Max_Health)) {
@@ -128,7 +130,7 @@ function selectResource (resource) {
 		$('.feed-button').css('display', 'none');
 	} else {
 		$('img').removeClass('selected');
-		$(resourceSelector).addClass('selected');	
+		$(resourceSelector).addClass('selected');
 		$('.feed-button').css('display', 'block');
 	}
 }
@@ -140,7 +142,7 @@ function feedPet (pet, resourceId, userId) {
 			method: 'get',
 			url: queryString
 		}).done(function (results) {
-			var listItemSelector = $('.selected')[0].parentElement;	
+			var listItemSelector = $('.selected')[0].parentElement;
 			var quantitySelector = $(listItemSelector).children()[0];
 			var itemQuantity = parseInt($(quantitySelector).text()) - 1;
 			$(quantitySelector).text(itemQuantity);

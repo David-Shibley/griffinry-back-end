@@ -125,17 +125,43 @@ body, html {
   border-radius: 10px;
   padding: 1rem;
   margin: 1rem auto;
-  font-size: 2rem; }
+  font-size: 2rem;
+  justify-self: flex-end; }
 
 .pet-display {
   display: flex;
   height: 100%;
-  flex-flow: row wrap; }
+  flex-flow: row nowrap; }
   .pet-display > div {
     margin-left: 1rem;
     display: flex;
     flex-direction: column;
     flex-grow: 1; }
+  .pet-display p {
+    text-align: right; }
+
+#current-stats {
+  width: 15rem; }
+
+#max-health {
+  display: block;
+  width: 100%;
+  background-color: gray; }
+
+#max-energy {
+  display: block;
+  width: 100%;
+  background-color: gray; }
+
+#current-health {
+  display: inline-block;
+  width: 100%;
+  background-color: red; }
+
+#current-energy {
+  display: inline-block;
+  width: 100%;
+  background-color: red; }
 
 .resource-list {
   display: flex;

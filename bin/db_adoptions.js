@@ -68,10 +68,11 @@ function Update_Stats_For_Adoption(adoptionId){
   return Get_Last_Updated(adoptionId).then(function(result){
     secondsSinceLastUpdate = Math.abs(dateNow - result.Last_Updated);
     secondsSinceLastUpdate = Math.round(secondsSinceLastUpdate / 1000);
+
   }).then(function(){
 
     // update health
-    return Get_Current_Health(adoptionId).then(function(result){
+    Get_Current_Health(adoptionId).then(function(result){
       var currentHealth = result.Current_Health;
       var newHealth = currentHealth - (secondsSinceLastUpdate * healthUpdateRateSec);
       if (newHealth < 0) {
@@ -84,29 +85,23 @@ function Update_Stats_For_Adoption(adoptionId){
 
     // update energy
     var maxEnergy = 0;
-    return Get_Max_Energy(adoptionId).then(function(result){
+    Get_Max_Energy(adoptionId).then(function(result){
       maxEnergy = result.Max_Energy;
+
+    }).then(function(){
+      return Get_Current_Energy(adoptionId).then(function(result){
+        var currentEnergy = Number(result.Current_Energy);
+        var newEnergy = currentEnergy + (secondsSinceLastUpdate * energyUpdateRateSec);
+        if (newEnergy > maxEnergy) {
+          newEnergy = maxEnergy;
+        }
+        Set_Current_Energy(adoptionId, newEnergy).then(function(){});
+      }).then(function(){
+        // update last updated field
+        return Set_Last_Updated(adoptionId).then(function(){});
+      })
     })
-
-    Get_Current_Energy(adoptionId).then(function(result){
-      var currentEnergy = Number(result.Current_Energy);
-      var newEnergy = currentEnergy + (secondsSinceLastUpdate * energyUpdateRateSec);
-
-      if (newEnergy > maxEnergy) {
-        newEnergy = maxEnergy;
-      }
-
-      return Set_Current_Energy(adoptionId, newEnergy).then(function(){});
-    })
-
-  }).then(function(){
-
-    // update last updated field
-    return Set_Last_Updated(adoptionId).then(function(){
-    });
-
   })
-
 };
 
 function Get_Pet_List(userId){
