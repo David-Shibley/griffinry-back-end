@@ -55,8 +55,8 @@ router.get('/feed', function(req, res){
           }
           db_Adoptions.increasePetHealth(adoptionId, currentHealth).then(function(){
             db_User_Resources.useResource(userId, resourceId).then(function(){
-              res.send(currentHealth);
-            });
+              res.send(currentHealth.toString());
+            })
           })
         })
       } else {
