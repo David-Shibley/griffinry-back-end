@@ -62,18 +62,21 @@ router.get('/:id', function(req, res) {
 });
 
 router.get('/:id/edit', function(req, res) {
-  console.log('user ', req.user);
-  if(Array.isArray(req.user)){
-    req.user.id = req.user[0].id;
-    req.user = req.user[0];
-  }
-  if (req.user && req.params.id == req.user.id) {
-    res.render('edit', {
-      user: req.user
-    });
-  } else {
-    res.end('You do not have permision to edit this user');
-  }
+  Users().where('id', req.params.id).first()
+  .then(function(info) {
+    console.log(info);
+    if(Array.isArray(req.user)){
+      req.user.id = req.user[0].id;
+      req.user = req.user[0];
+    }
+    if (req.user && req.params.id == req.user.id) {
+      res.render('edit', {
+        user: info
+      });
+    } else {
+      res.end('You do not have permision to edit this user');
+    }
+  })
 });
 
 router.post('/:id', function(req, res){

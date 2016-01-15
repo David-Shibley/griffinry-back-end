@@ -14,11 +14,10 @@ block content
       p #{user_data[0].About_Me}
       if user_data[0].Name
         h2 Pets
-        ul
-          each pet in user_data
-            li
-            img(src='/images/#{pet.Pet_Id.toLowerCase()}_#{pet.Color.toLowerCase()}_tn.png')
-            p #{pet.Name}
-            p #{pet.Pet_Id}
+        each pet in user_data
+          div
+            img(class='profile-pet' src='/images/#{pet.Pet_Id.toLowerCase()}_#{pet.Color.toLowerCase()}_tn.png')
+            p Pet name: #{pet.Name}
+            p Pet type: #{pet.Pet_Id}
   else
     h1.visible=error
