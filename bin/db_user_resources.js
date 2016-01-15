@@ -37,7 +37,7 @@ module.exports = {
 
   useResource: function(userId, resourceId){
     return Get_Quantity(userId, resourceId).then(function(result){
-      var quantity = result.Quantity;
+      var quantity = Number(result.Quantity);
       if (quantity == 1) {
         Delete_Resource(userId, resourceId).then(function(result){})
       } else {
