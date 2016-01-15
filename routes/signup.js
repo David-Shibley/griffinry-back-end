@@ -111,15 +111,15 @@ router.post('/',function(req, res, next){
     }).catch(function(err){
       var errorType = err.constraint;
       if (errorType == 'users_user_name_unique') {
-        res.render('signup', {
+        return res.render('signup', {
           error: 'That user name is already taken!'
         });
       } else if (errorType == 'users_email_unique') {
-        res.render('signup', {
+        return res.render('signup', {
           error: 'That email is already taken!'
         });
       } else {
-        res.render('signup', {error: err});
+        return res.render('signup', {error: err});
       }
     });
   });
