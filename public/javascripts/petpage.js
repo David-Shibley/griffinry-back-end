@@ -31,6 +31,7 @@ $(document).ready(function () {
 			$('.feed-button').click(function() {
 				if (!$('.feed-button').hasClass('disabled')) {
 					selectedPet.Current_Health = Math.round(feedPet(selectedPet, selectedResource, user.id));
+					console.log(selectedPet.Current_Health);
 					renderActivePet(selectedPet);
 				}
 			});
@@ -149,7 +150,6 @@ function feedPet (pet, resourceId, userId) {
 				listItemSelector.remove();
 				$('.feed-button').css('display', 'none');
 			}
-			console.log(results);
 			return results;
 		});
 	}
