@@ -45,7 +45,7 @@ router.get('/feed', function(req, res){
     maxHealth = result.Max_Health
   }).then(function(){
     db_Adoptions.getPetCurrentHealth(adoptionId).then(function(result){
-      currentHealth = result.Current_Health;
+      currentHealth = Number(result.Current_Health);
       if (currentHealth < maxHealth) {
         currentHealth += 1;
         db_Adoptions.increasePetHealth(adoptionId, currentHealth).then(function(){
