@@ -76,6 +76,13 @@ body, html {
   .signup-form input {
     margin: 0.2rem 0; }
 
+.password-error {
+  font-size: 1rem;
+  color: red;
+  font-weight: normal;
+  text-align: center;
+  display: block; }
+
 .pet-creator {
   display: flex;
   flex-direction: row;
@@ -122,15 +129,39 @@ body, html {
 
 .pet-display {
   display: flex;
-  flex-direction: row; }
+  height: 100%;
+  flex-flow: row wrap; }
   .pet-display > div {
     margin-left: 1rem;
     display: flex;
-    flex-direction: column; }
+    flex-direction: column;
+    flex-grow: 1; }
 
 .resource-list {
   display: flex;
-  flex-direction: row; }
+  flex-direction: row;
+  text-align: center; }
+  .resource-list > li {
+    margin-right: 2em;
+    margin-left: 0; }
+  .resource-list img {
+    border-radius: 50%;
+    margin: 1rem; }
+
+.item-quantity {
+  font-weight: bold; }
+
+.Common {
+  box-shadow: 0px 0px 1rem 0.1rem #2fb8ac; }
+
+.Rare {
+  box-shadow: 0px 0px 1rem 0.1rem #d67900; }
+
+.Epic {
+  box-shadow: 0px 0px 1rem 0.1rem #7854ff; }
+
+.selected {
+  background-color: #ecbe13; }
 
 .active > img {
   box-shadow: 0px 0px 1rem 0.1rem #046d8b; }

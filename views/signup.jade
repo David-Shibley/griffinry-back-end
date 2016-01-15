@@ -3,6 +3,8 @@ html
   head
     title Griffinry
     link(rel='stylesheet', href='css/main.css')
+    script(src='https://code.jquery.com/jquery-2.2.0.min.js')
+    script(src='javascripts/validate.js')
   body
     header
       h1 Griffinry
@@ -11,9 +13,9 @@ html
       .user
         form(action='/auth/login', method='POST')
           label(for='username') Username:
-          input(type='text', name='username')
+          input(id='username', type='text', name='username', required='required')
           label(for='password') Password:
-          input(type='password', name='password')
+          input(id='password', type='password', name='password', required='required')
           input(type='submit', value='Log in')
         span
           | Log in with 
@@ -25,16 +27,17 @@ html
           if error
             h1.visible(class="error") #{error}
         h1.visible Create an Account
+        span(class='password-error')
         .signup-container
           form.signup-form(action='/signup', method='POST')
             label(for='username') Username:
-            input(type='text', name='username')
+            input(id='username', type='text', name='username', required='required')
             label(for='email') Email:
-            input(type='text', name='email')
+            input(id='email', type='text', name='email', required='required')
             label(for='password') Password:
-            input(type='password', name='password')
+            input(id='password' type='password', name='password', required='required')
             label(for='dob') Date of Birth
-            input(type='date', name='dob')
+            input(id='dob', type='date', name='dob', required='required')
             input(type='submit', value='Sign up')
           div
             p or
