@@ -43,7 +43,7 @@ function passwordValidator(req) {
 
 function dateValidator(req) {
   var currentDate = moment(new Date())._d;
-  var formattedDate = moment(req.DOB)._d;
+  var formattedDate = moment(req.dob)._d;
   if (currentDate > formattedDate) {
     return true;
   }
@@ -64,17 +64,17 @@ router.post('/',function(req, res, next){
   var validPassword = passwordValidator(req.body);
   var validDOB = dateValidator(req.body);
   if (!validEmail) {
-    res.render('signup', {
+    return res.render('signup', {
       error: 'Email must be in proper format "example@email.com"'
     });
   }
   if (!validPassword) {
-    res.render('signup', {
+    return res.render('signup', {
       error: 'Password must be at least 8 characters'
     });
   }
   if (!validDOB) {
-    res.render('signup', {
+    return res.render('signup', {
       error: 'Birthdate cannot be in the future, sorry time travelers and aliens.'
     });
   }
