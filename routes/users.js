@@ -28,12 +28,10 @@ router.get('/:id', function(req, res) {
       Users().where('id', req.params.id).first()
       .then(function(user) {
         if (user) {
-          if (req.user.id === Number(req.params.id) || req.user.Role === 'Administrator') {
             res.render('profile', {
               user_data: [user],
-              authenticated: true
+              authenticated: req.user ? (req.user.id === Number(req.params.id) || req.user.Role === 'Administrator') : false
             });
-          }
         } else {
           res.render('profile', {
             error: 'User not found'
