@@ -68,11 +68,16 @@ router.post('/',function(req, res, next){
       error: 'Email must be in proper format "example@email.com"'
     });
   }
-  if (!validPassword) {
-    return res.render('signup', {
-      error: 'Password must be at least 8 characters'
-    });
-  }
+  // if (!validPassword) {
+  //   res.render('signup', {
+  //     error: 'Password must be at least 8 characters'
+  //   });
+  // }
+  // if (!validPassword) {
+  //   return res.render('signup', {
+  //     error: 'Password must be at least 8 characters'
+  //   });
+  // }
   if (!validDOB) {
     return res.render('signup', {
       error: 'Birthdate cannot be in the future, sorry time travelers and aliens.'
