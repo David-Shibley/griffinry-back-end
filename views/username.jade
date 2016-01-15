@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  header.hero
+  section
+    h1.visible Create an Account
+    .signup-container
+      form.signup-form(action='/signup', method='POST')
+        label(for='username') Username:
+        input(type='text', name='username')
+        input(type='hidden', name='email' value=email)
+        input(type='hidden', name='password' value="null")
+        label(for='dob') Date of Birth
+        input(type='date', name='dob')
+        input(type='submit', value='Sign up')
