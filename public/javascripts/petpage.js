@@ -96,8 +96,8 @@ function renderResourceList (resource) {
 }
 
 function renderActivePet (pet) {
-	var healthPercent = Math.round(pet.Current_Health * pet.Max_Health / 100) + '%'; 
-	var energyPercent = Math.round(pet.Current_Energy * pet.Max_Energy / 100) + '%'; 
+	var healthPercent = Math.round(pet.Current_Health / pet.Max_Health * 100) + '%'; 
+	var energyPercent = Math.round(pet.Current_Energy / pet.Max_Energy * 100) + '%'; 
 
 	$('#current-name').text(pet.Name);
 	$('#current-species').text(pet.Color + ' ' + pet.Pet_Id);
