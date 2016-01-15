@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var knex = require('../db/knex');
 var bcrypt = require('bcrypt');
+var moment = require('moment');
 
 function Users(){
   return knex('users');
@@ -40,6 +41,17 @@ function passwordValidator(req) {
   return true;
 }
 
+function dateValidator(req) {
+  var currentDate = moment(new Date())._d;
+  var formattedDate = moment(req.dob)._d;
+  if (currentDate > formattedDate) {
+    return true;
+  }
+
+  return false;
+
+}
+
 router.get('/', function(req, res){
   if(req.isAuthenticated()){
   res.redirect('/dashboard');
@@ -50,8 +62,9 @@ router.get('/', function(req, res){
 router.post('/',function(req, res, next){
   var validEmail = emailValidator(req.body);
   var validPassword = passwordValidator(req.body);
+  var validDOB = dateValidator(req.body);
   if (!validEmail) {
-    res.render('signup', {
+    return res.render('signup', {
       error: 'Email must be in proper format "example@email.com"'
     });
   }
@@ -60,6 +73,16 @@ router.post('/',function(req, res, next){
   //     error: 'Password must be at least 8 characters'
   //   });
   // }
+  // if (!validPassword) {
+  //   return res.render('signup', {
+  //     error: 'Password must be at least 8 characters'
+  //   });
+  // }
+  if (!validDOB) {
+    return res.render('signup', {
+      error: 'Birthdate cannot be in the future, sorry time travelers and aliens.'
+    });
+  }
   bcrypt.hash(req.body.password, 10, function(err, hash){
     if(err){
       console.log(err);
