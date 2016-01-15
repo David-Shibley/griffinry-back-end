@@ -134,7 +134,7 @@ function selectResource (resource) {
 }
 
 function feedPet (pet, resourceId, userId) {
-	if (pet && resourceId && pet.Current_Health === pet.MaxHealth) {
+	if (pet && resourceId && Math.round(pet.Current_Health) < Math.round(pet.Max_Health)) {
 		var queryString = 'adoptions/feed/?userId=' + userId + '&adoptionId=' + pet.id + '&resourceId=' + resourceId;
 		$.ajax({
 			method: 'get',
