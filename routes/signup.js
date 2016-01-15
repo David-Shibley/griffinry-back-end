@@ -55,11 +55,11 @@ router.post('/',function(req, res, next){
       error: 'Email must be in proper format "example@email.com"'
     });
   }
-  if (!validPassword) {
-    res.render('signup', {
-      error: 'Password must be at least 8 characters'
-    });
-  }
+  // if (!validPassword) {
+  //   res.render('signup', {
+  //     error: 'Password must be at least 8 characters'
+  //   });
+  // }
   bcrypt.hash(req.body.password, 10, function(err, hash){
     if(err){
       console.log(err);
